@@ -1,7 +1,12 @@
 package agh.cs.evolution;
 
 public class Animal extends AbstractMapElement {
-  public Animal(Vector2d position) {
+  private final Genome genome;
+  private int energy;
+
+  public Animal(Vector2d position, int energy) {
     super(position);
+    this.genome = new Genome();
+    this.energy = energy;
   }
 }
