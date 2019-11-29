@@ -39,4 +39,16 @@ public class Vector2dTest {
     assertEquals(new Vector2d(-2, 1), new Vector2d(2, -1).opposite());
     assertEquals(new Vector2d(0, 0), new Vector2d(0, 0).opposite());
   }
+
+  @Test
+  public void followsShouldReturnWhetherVectorIsUpperRightInRespectToTheGiven() {
+    assertTrue(new Vector2d(-1, -2).precedes(new Vector2d(0, 0)));
+    assertFalse(new Vector2d(1, 2).precedes(new Vector2d(0, 0)));
+  }
+
+  @Test
+  public void precedesShouldReturnWhetherVectorIsLowerLeftInRespectToTheGiven() {
+    assertTrue(new Vector2d(1, 2).follows(new Vector2d(0, 0)));
+    assertFalse(new Vector2d(-1, -2).follows(new Vector2d(0, 0)));
+  }
 }

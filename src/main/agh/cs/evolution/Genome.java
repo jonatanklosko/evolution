@@ -9,7 +9,7 @@ public class Genome {
   private final List<Byte> genes;
 
   public Genome() {
-    this.genes = getRandomGenes();
+    this.genes = generateRandomGenes();
   }
 
   public Genome(List<Byte> genes) {
@@ -29,6 +29,10 @@ public class Genome {
     return String.format("Genome{%s}", genesString);
   }
 
+  public Byte getRandomGene() {
+    return RandomUtils.randomElement(this.genes);
+  }
+
   public Genome combine(Genome other) {
     int[] splitIndices = RandomUtils.random.ints(1, GENOME_SIZE - 1)
         .distinct().limit(2).sorted().toArray();
@@ -40,7 +44,7 @@ public class Genome {
     return new Genome(combinedGenes);
   }
 
-  private static List<Byte> getRandomGenes() {
+  private static List<Byte> generateRandomGenes() {
     List<Byte> randomGenes = RandomUtils.random.ints(0, 8)
         .limit(GENOME_SIZE)
         .boxed()
@@ -59,11 +63,10 @@ public class Genome {
         .map(Integer::byteValue)
         .filter(gene -> !genes.contains(gene))
         .forEach(missingGene -> {
-          int[] availableIndices = IntStream.range(0, GENOME_SIZE)
+          List<Integer> availableIndices = IntStream.range(0, GENOME_SIZE).boxed()
               .filter(index -> Collections.frequency(genes, genes.get(index)) > 1)
-              .toArray();
-          int index = availableIndices[RandomUtils.random.nextInt(availableIndices.length)];
-          genes.set(index, missingGene);
+              .collect(Collectors.toList());
+          genes.set(RandomUtils.randomElement(availableIndices), missingGene);
         });
     Collections.sort(genes);
   }
