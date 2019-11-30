@@ -26,6 +26,25 @@ public class WorldMap {
     return new MapArea(jungleLowerLeft, jungleWidth, jungleHeight);
   }
 
+  public void addElement(IMapElement element) {
+    Vector2d position = element.getPosition();
+    List<IMapElement> elementsAtPosition = this.elementsByPosition.get(position);
+    if (elementsAtPosition == null) {
+      this.elementsByPosition.put(position, new LinkedList<>(List.of(element)));
+    } else {
+      elementsAtPosition.add(element);
+    }
+  }
+
+  public void removeElement(IMapElement element) {
+    Vector2d position = element.getPosition();
+    List<IMapElement> elementsAtPosition = this.elementsByPosition.get(position);
+    elementsAtPosition.remove(element);
+    if (elementsAtPosition.isEmpty()) {
+      this.elementsByPosition.remove(position);
+    }
+  }
+
   public boolean isOccupied(Vector2d position) {
     return this.elementsByPosition.containsKey(position);
   }
@@ -56,39 +75,21 @@ public class WorldMap {
     ));
   }
 
-  public boolean isInJungle(Vector2d position) {
-    return this.jungle.contains(position);
-  }
-
-  public Stream<Vector2d> emptyAdjacentPositions$(Vector2d position) {
-    return Direction.allUnitVectors$()
+  public Stream<Vector2d> freeAdjacentPositions$(Vector2d position) {
+    return Direction.allDirections$()
+        .map(Direction::toUnitVector)
         .map(unitVector -> this.shiftIntoBounds(position.add(unitVector)))
         .filter(adjacentPosition -> !this.isOccupied(adjacentPosition));
   }
 
   public Vector2d shiftIntoBounds(Vector2d position) {
     return new Vector2d(
-        ((position.x + this.width) % this.width),
-        ((position.y + this.height) % this.height)
+        Math.floorMod(position.x, this.width),
+        Math.floorMod(position.y, this.height)
     );
   }
 
-  public void addElement(IMapElement element) {
-    Vector2d position = element.getPosition();
-    List<IMapElement> elementsAtPosition = this.elementsByPosition.get(position);
-    if (elementsAtPosition == null) {
-      this.elementsByPosition.put(position, new LinkedList<>(List.of(element)));
-    } else {
-      elementsAtPosition.add(element);
-    }
-  }
-
-  public void removeElement(IMapElement element) {
-    Vector2d position = element.getPosition();
-    List<IMapElement> elementsAtPosition = this.elementsByPosition.get(position);
-    elementsAtPosition.remove(element);
-    if (elementsAtPosition.isEmpty()) {
-      this.elementsByPosition.remove(position);
-    }
+  public boolean isInJungle(Vector2d position) {
+    return this.jungle.contains(position);
   }
 }

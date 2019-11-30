@@ -33,12 +33,12 @@ public enum Direction {
     return Direction.directionByValue.get(value);
   }
 
-  public static Stream<Vector2d> allUnitVectors$() {
-    return Arrays.stream(Direction.values()).map(Direction::toUnitVector);
-  }
-
   public static Direction randomDirection() {
     return RandomUtils.randomElement(Direction.values());
+  }
+
+  public static Stream<Direction> allDirections$() {
+    return Arrays.stream(Direction.values());
   }
 
   public Vector2d toUnitVector() {

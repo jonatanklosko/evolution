@@ -8,7 +8,6 @@ public class Simulation {
   private final int startEnergy;
   private final int moveEnergy;
   private final int plantEnergy;
-  private final double jungleRatio;
   private final WorldMap map;
   private MapVisualizer mapVisualizer;
 
@@ -17,7 +16,6 @@ public class Simulation {
     this.startEnergy = startEnergy;
     this.moveEnergy = moveEnergy;
     this.plantEnergy = plantEnergy;
-    this.jungleRatio = jungleRatio;
     this.mapVisualizer = new MapVisualizer(this.map);
   }
 
@@ -37,18 +35,14 @@ public class Simulation {
   }
 
   public void removeDeadAnimals() {
-    this.map.elements$()
-        .filter(Animal.class::isInstance)
-        .map(Animal.class::cast)
+    this.animals$()
         .filter(Animal::isDead)
         .collect(Collectors.toList())  /* Materialize the stream first as we remove elements. */
         .forEach(this.map::removeElement);
   }
 
   public void moveAnimals() {
-    this.map.elements$()
-        .filter(Animal.class::isInstance)
-        .map(Animal.class::cast)
+    this.animals$()
         .collect(Collectors.toList()) /* Materialize the stream first as we remove elements. */
         .forEach(animal -> {
           animal.rotate();
@@ -95,7 +89,7 @@ public class Simulation {
               .sorted(Comparator.comparing(Animal::getEnergy).reversed())
               .limit(2)
               .collect(Collectors.toList());
-          List<Vector2d> possibleChildPositions = this.map.emptyAdjacentPositions$(position).collect(Collectors.toList());
+          List<Vector2d> possibleChildPositions = this.map.freeAdjacentPositions$(position).collect(Collectors.toList());
           if (animalPair.size() != 2 || possibleChildPositions.isEmpty()) return;
           Animal child = animalPair.get(0).childWith(animalPair.get(1), possibleChildPositions);
           this.map.addElement(child);
@@ -120,9 +114,8 @@ public class Simulation {
   }
 
   public Stream<Genome> livingGenomes$() {
-    return this.map.elements$()
-        .filter(Animal.class::isInstance)
-        .map(Animal.class::cast)
+    return this.animals$()
+        .filter(animal -> !animal.isDead())
         .map(Animal::getGenome);
   }
 
@@ -131,5 +124,11 @@ public class Simulation {
         new Vector2d(0, 0),
         new Vector2d(this.map.width - 1, this.map.height - 1)
     );
+  }
+
+  private Stream<Animal> animals$() {
+    return this.map.elements$()
+        .filter(Animal.class::isInstance)
+        .map(Animal.class::cast);
   }
 }
