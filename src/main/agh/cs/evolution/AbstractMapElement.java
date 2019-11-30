@@ -1,6 +1,6 @@
 package agh.cs.evolution;
 
-public class AbstractMapElement implements IMapElement {
+public abstract class AbstractMapElement implements IMapElement {
   protected Vector2d position;
 
   public AbstractMapElement(Vector2d position) {

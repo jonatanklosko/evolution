@@ -20,6 +20,10 @@ public class Animal extends AbstractMapElement {
     this.direction = Direction.randomDirection();
   }
 
+  public String symbolRepresentation() {
+    return this.direction.symbolRepresentation();
+  }
+
   public int getEnergy() {
     return this.energy;
   }
@@ -46,8 +50,8 @@ public class Animal extends AbstractMapElement {
     this.position = newPosition;
   }
 
-  public void increaseEnergy(int energy) {
-    this.energy += energy;
+  public void addEnergy(int energyDiff) {
+    this.energy += energyDiff;
   }
 
   public boolean ableToReproduce() {

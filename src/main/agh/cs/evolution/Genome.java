@@ -70,4 +70,17 @@ public class Genome {
         });
     Collections.sort(genes);
   }
+
+  @Override
+  public boolean equals(Object other) {
+    if (this == other) return true;
+    if (!(other instanceof Genome)) return false;
+    Genome that = (Genome) other;
+    return Objects.equals(genes, that.genes);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(genes);
+  }
 }

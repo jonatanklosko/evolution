@@ -10,6 +10,7 @@ public class Simulation {
   private final int plantEnergy;
   private final double jungleRatio;
   private final WorldMap map;
+  private MapVisualizer mapVisualizer;
 
   public Simulation(int width, int height, int startEnergy, int moveEnergy, int plantEnergy, double jungleRatio) {
     this.map = new WorldMap(width, height, jungleRatio);
@@ -17,6 +18,7 @@ public class Simulation {
     this.moveEnergy = moveEnergy;
     this.plantEnergy = plantEnergy;
     this.jungleRatio = jungleRatio;
+    this.mapVisualizer = new MapVisualizer(this.map);
   }
 
   public void initialize(int numberOfAnimals) {
@@ -55,7 +57,7 @@ public class Simulation {
           this.map.removeElement(animal);
           animal.moveTo(newPosition);
           this.map.addElement(animal);
-          animal.increaseEnergy(-this.moveEnergy); // TODO: improve that lol
+          animal.addEnergy(-this.moveEnergy);
         });
   }
 
@@ -74,7 +76,7 @@ public class Simulation {
           );
       if (animalsByEnergy.isEmpty()) return;
       animalsByEnergy.lastEntry().getValue().forEach(animal -> {
-        animal.increaseEnergy(plant.getEnergy() / animalsByEnergy.size());
+        animal.addEnergy(plant.getEnergy() / animalsByEnergy.size());
         this.map.removeElement(plant);
       });
     });
@@ -117,10 +119,17 @@ public class Simulation {
     }
   }
 
-  public Stream<Genome> liveGenomes$() {
+  public Stream<Genome> livingGenomes$() {
     return this.map.elements$()
         .filter(Animal.class::isInstance)
         .map(Animal.class::cast)
         .map(Animal::getGenome);
+  }
+
+  public String getVisualization() {
+    return this.mapVisualizer.draw(
+        new Vector2d(0, 0),
+        new Vector2d(this.map.width - 1, this.map.height - 1)
+    );
   }
 }

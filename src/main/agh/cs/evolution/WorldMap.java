@@ -1,7 +1,6 @@
 package agh.cs.evolution;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -29,6 +28,10 @@ public class WorldMap {
 
   public boolean isOccupied(Vector2d position) {
     return this.elementsByPosition.containsKey(position);
+  }
+
+  public List<IMapElement> elementsAt(Vector2d position) {
+    return this.elementsByPosition.getOrDefault(position, new LinkedList<>());
   }
 
   public Stream<IMapElement> elements$() {

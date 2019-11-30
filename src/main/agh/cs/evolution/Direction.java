@@ -58,4 +58,18 @@ public enum Direction {
   public Direction compose(Direction other) {
     return Direction.directionByValue.get((this.value + other.value) % 8);
   }
+
+  public String symbolRepresentation() {
+    switch (this) {
+      case NORTH: return "↑";
+      case NORTHEAST: return "↗";
+      case EAST: return "→";
+      case SOUTHEAST: return "↘";
+      case SOUTH: return "↓";
+      case SOUTHWEST: return "↙";
+      case WEST: return "←";
+      case NORTHWEST: return "↖";
+    }
+    return null;
+  }
 }
