@@ -1,13 +1,16 @@
 package agh.cs.evolution;
 
+import agh.cs.evolution.gui.AppGui;
+
 import java.util.stream.Collectors;
 
 public class Main {
   public static void main(String[] args) {
-    Simulation simulation = new Simulation(60, 25, 30, 2, 8, 0.3);
+    Simulation simulation = new Simulation(50, 25, 30, 2, 8, 0.3);
     simulation.initialize(40);
+//    new AppGui(simulation);
     long startTime = System.nanoTime();
-    for (int i = 0; i < 20000; i++) {
+    for (int i = 0; i < 1000; i++) {
       long animalCount = simulation.livingGenomes$().count();
       if (animalCount == 0) {
         System.out.println("All animals died");

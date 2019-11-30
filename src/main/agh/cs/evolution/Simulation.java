@@ -131,4 +131,8 @@ public class Simulation {
         .filter(Animal.class::isInstance)
         .map(Animal.class::cast);
   }
+
+  public WorldMap getMap() {
+    return this.map;
+  }
 }
