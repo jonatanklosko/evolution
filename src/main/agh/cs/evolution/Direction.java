@@ -1,30 +1,44 @@
 package agh.cs.evolution;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public enum Direction {
-  NORTH,
-  NORTHEAST,
-  EAST,
-  SOUTHEAST,
-  SOUTH,
-  SOUTHWEST,
-  WEST,
-  NORTHWEST;
+  NORTH(0),
+  NORTHEAST(1),
+  EAST(2),
+  SOUTHEAST(3),
+  SOUTH(4),
+  SOUTHWEST(5),
+  WEST(6),
+  NORTHWEST(7);
 
-  public static Direction directionByCode(int code) {
-    if (code < 0 || code > 7) {
-      throw new IllegalArgumentException("Invalid direction code: " + code);
-    }
-    return Direction.values()[code];
+  private final int value;
+  private static Map<Integer, Direction> directionByValue = new HashMap<>();
+
+  Direction(int value) {
+    this.value = value;
   }
 
-  public static List<Vector2d> allUnitVectors() {
-    return Arrays.asList(Direction.values()).stream()
-        .map(Direction::toUnitVector)
-        .collect(Collectors.toList());
+  static {
+    Arrays.stream(values()).forEach(direction -> directionByValue.put(direction.value, direction));
+  }
+
+  public static Direction directionByValue(int value) {
+    if (value < 0 || value > 7) {
+      throw new IllegalArgumentException("Invalid direction value: " + value);
+    }
+    return Direction.directionByValue.get(value);
+  }
+
+  public static Stream<Vector2d> allUnitVectors$() {
+    return Arrays.stream(Direction.values()).map(Direction::toUnitVector);
+  }
+
+  public static Direction randomDirection() {
+    return RandomUtils.randomElement(Direction.values());
   }
 
   public Vector2d toUnitVector() {
@@ -39,5 +53,9 @@ public enum Direction {
       case NORTHWEST: return new Vector2d(-1, 1);
     }
     return null;
+  }
+
+  public Direction compose(Direction other) {
+    return Direction.directionByValue.get((this.value + other.value) % 8);
   }
 }

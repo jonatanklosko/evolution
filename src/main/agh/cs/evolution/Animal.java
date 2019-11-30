@@ -6,18 +6,18 @@ public class Animal extends AbstractMapElement {
   private final Genome genome;
   private int energy;
   private int minReproductionEnergy;
+  private Direction direction;
 
   public Animal(Vector2d position, int energy) {
-    super(position);
-    this.energy = energy;
-    this.genome = new Genome();
-    this.minReproductionEnergy = energy / 2;
+    this(position, energy, new Genome());
   }
 
   public Animal(Vector2d position, int energy, Genome genome) {
     super(position);
     this.energy = energy;
     this.genome = genome;
+    this.minReproductionEnergy = energy / 2;
+    this.direction = Direction.randomDirection();
   }
 
   public int getEnergy() {
@@ -32,9 +32,14 @@ public class Animal extends AbstractMapElement {
     return this.energy == 0;
   }
 
+  public void rotate() {
+    byte gene = this.genome.getRandomGene();
+    Direction geneDirection = Direction.directionByValue(gene);
+    this.direction = this.direction.compose(geneDirection);
+  }
+
   public Vector2d moveVector() {
-    Byte gene = this.genome.getRandomGene();
-    return Direction.directionByCode(gene).toUnitVector();
+    return this.direction.toUnitVector();
   }
 
   public void moveTo(Vector2d newPosition) {

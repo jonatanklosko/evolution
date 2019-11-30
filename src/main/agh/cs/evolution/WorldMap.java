@@ -57,11 +57,10 @@ public class WorldMap {
     return this.jungle.contains(position);
   }
 
-  public List<Vector2d> emptyAdjacentPositions(Vector2d position) {
-    return Direction.allUnitVectors().stream()
+  public Stream<Vector2d> emptyAdjacentPositions$(Vector2d position) {
+    return Direction.allUnitVectors$()
         .map(unitVector -> this.shiftIntoBounds(position.add(unitVector)))
-        .filter(adjacentPosition -> !this.isOccupied(adjacentPosition))
-        .collect(Collectors.toList());
+        .filter(adjacentPosition -> !this.isOccupied(adjacentPosition));
   }
 
   public Vector2d shiftIntoBounds(Vector2d position) {

@@ -49,6 +49,7 @@ public class Simulation {
         .map(Animal.class::cast)
         .collect(Collectors.toList()) /* Materialize the stream first as we remove elements. */
         .forEach(animal -> {
+          animal.rotate();
           Vector2d move = animal.moveVector();
           Vector2d newPosition = this.map.shiftIntoBounds(animal.getPosition().add(move));
           this.map.removeElement(animal);
@@ -92,7 +93,7 @@ public class Simulation {
               .sorted(Comparator.comparing(Animal::getEnergy).reversed())
               .limit(2)
               .collect(Collectors.toList());
-          List<Vector2d> possibleChildPositions = this.map.emptyAdjacentPositions(position);
+          List<Vector2d> possibleChildPositions = this.map.emptyAdjacentPositions$(position).collect(Collectors.toList());
           if (animalPair.size() != 2 || possibleChildPositions.isEmpty()) return;
           Animal child = animalPair.get(0).childWith(animalPair.get(1), possibleChildPositions);
           this.map.addElement(child);
@@ -116,7 +117,7 @@ public class Simulation {
     }
   }
 
-  public Stream<Genome> liveGenomes() {
+  public Stream<Genome> liveGenomes$() {
     return this.map.elements$()
         .filter(Animal.class::isInstance)
         .map(Animal.class::cast)
