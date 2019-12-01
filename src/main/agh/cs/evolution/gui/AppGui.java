@@ -61,7 +61,7 @@ public class AppGui extends JFrame {
             );
           })
           .collect(Collectors.joining("\n"));
-      JTextArea textArea = new JTextArea(30, 50);
+      JTextArea textArea = new JTextArea(30, 60);
       textArea.setText(genomes);
       textArea.setEditable(false);
       JScrollPane scrollPane = new JScrollPane(textArea);
