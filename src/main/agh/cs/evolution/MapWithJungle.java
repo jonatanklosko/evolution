@@ -4,13 +4,13 @@ import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class WorldMap implements IWorldMap, IPositionChangeObserver {
+public class MapWithJungle implements IWorldMap, IPositionChangeObserver {
   public final int width;
   public final int height;
   private Map<Vector2d, List<IMapElement>> elementsByPosition;
   private MapArea jungle;
 
-  public WorldMap(int width, int height, double jungleRatio) {
+  public MapWithJungle(int width, int height, double jungleRatio) {
     this.width = width;
     this.height = height;
     this.elementsByPosition = new LinkedHashMap<>();

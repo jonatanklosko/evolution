@@ -1,7 +1,7 @@
 package agh.cs.evolution.gui;
 
 import agh.cs.evolution.Simulation;
-import agh.cs.evolution.WorldMap;
+import agh.cs.evolution.MapWithJungle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,7 @@ public class AppGui extends JFrame {
   public AppGui(Simulation simulation) {
     super("Evolution");
     this.simulation = simulation;
-    WorldMap map = this.simulation.getMap();
+    MapWithJungle map = this.simulation.getMap();
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 

@@ -8,11 +8,11 @@ public class Simulation {
   private final int startEnergy;
   private final int moveEnergy;
   private final int plantEnergy;
-  private final WorldMap map;
+  private final MapWithJungle map;
   private MapVisualizer mapVisualizer;
 
   public Simulation(int width, int height, int startEnergy, int moveEnergy, int plantEnergy, double jungleRatio) {
-    this.map = new WorldMap(width, height, jungleRatio);
+    this.map = new MapWithJungle(width, height, jungleRatio);
     this.startEnergy = startEnergy;
     this.moveEnergy = moveEnergy;
     this.plantEnergy = plantEnergy;
@@ -127,7 +127,7 @@ public class Simulation {
         .map(Animal.class::cast);
   }
 
-  public WorldMap getMap() {
+  public MapWithJungle getMap() {
     return this.map;
   }
 }
