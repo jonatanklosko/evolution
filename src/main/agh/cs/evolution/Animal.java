@@ -1,12 +1,14 @@
 package agh.cs.evolution;
 
+import java.util.LinkedList;
 import java.util.List;
 
-public class Animal extends AbstractMapElement {
+public class Animal extends AbstractMapElement implements IPositionChangeSubject {
   private final Genome genome;
   private int energy;
   private int minReproductionEnergy;
   private Direction direction;
+  private List<IPositionChangeObserver> positionChangeObservers;
 
   public Animal(Vector2d position, int energy) {
     this(position, energy, new Genome());
@@ -18,6 +20,7 @@ public class Animal extends AbstractMapElement {
     this.genome = genome;
     this.minReproductionEnergy = energy / 2;
     this.direction = Direction.randomDirection();
+    this.positionChangeObservers = new LinkedList<>();
   }
 
   public String symbolRepresentation() {
@@ -47,7 +50,7 @@ public class Animal extends AbstractMapElement {
   }
 
   public void moveTo(Vector2d newPosition) {
-    this.position = newPosition;
+    this.setPosition(newPosition);
   }
 
   public void addEnergy(int energyDiff) {
@@ -65,5 +68,21 @@ public class Animal extends AbstractMapElement {
     this.energy *= 0.75;
     other.energy *= 0.75;
     return new Animal(childPosition, childEnergy, childGenome);
+  }
+
+  public void addPositionChangeObserver(IPositionChangeObserver observer) {
+    this.positionChangeObservers.add(observer);
+  }
+
+  public void removePositionChangeObserver(IPositionChangeObserver observer) {
+    this.positionChangeObservers.remove(observer);
+  }
+
+  private void setPosition(Vector2d newPosition) {
+    Vector2d oldPosition = this.position;
+    this.position = newPosition;
+    for (IPositionChangeObserver observer : this.positionChangeObservers) {
+      observer.positionChanged(this, oldPosition, newPosition);
+    }
   }
 }

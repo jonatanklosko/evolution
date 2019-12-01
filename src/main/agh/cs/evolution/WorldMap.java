@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class WorldMap {
+public class WorldMap implements IPositionChangeObserver {
   public final int width;
   public final int height;
   private Map<Vector2d, List<IMapElement>> elementsByPosition;
@@ -27,21 +27,16 @@ public class WorldMap {
   }
 
   public void addElement(IMapElement element) {
-    Vector2d position = element.getPosition();
-    List<IMapElement> elementsAtPosition = this.elementsByPosition.get(position);
-    if (elementsAtPosition == null) {
-      this.elementsByPosition.put(position, new LinkedList<>(List.of(element)));
-    } else {
-      elementsAtPosition.add(element);
+    this.addElementToPosition(element, element.getPosition());
+    if (element instanceof IPositionChangeSubject) {
+      ((IPositionChangeSubject) element).addPositionChangeObserver(this);
     }
   }
 
   public void removeElement(IMapElement element) {
-    Vector2d position = element.getPosition();
-    List<IMapElement> elementsAtPosition = this.elementsByPosition.get(position);
-    elementsAtPosition.remove(element);
-    if (elementsAtPosition.isEmpty()) {
-      this.elementsByPosition.remove(position);
+    this.removeElementFromPosition(element, element.getPosition());
+    if (element instanceof IPositionChangeSubject) {
+      ((IPositionChangeSubject) element).removePositionChangeObserver(this);
     }
   }
 
@@ -91,5 +86,27 @@ public class WorldMap {
 
   public boolean isInJungle(Vector2d position) {
     return this.jungle.contains(position);
+  }
+
+  public void positionChanged(IMapElement element, Vector2d oldPosition, Vector2d newPosition) {
+    this.removeElementFromPosition(element, oldPosition);
+    this.addElementToPosition(element, newPosition);
+  }
+
+  private void addElementToPosition(IMapElement element, Vector2d position) {
+    List<IMapElement> elementsAtPosition = this.elementsByPosition.get(position);
+    if (elementsAtPosition == null) {
+      this.elementsByPosition.put(position, new LinkedList<>(List.of(element)));
+    } else {
+      elementsAtPosition.add(element);
+    }
+  }
+
+  private void removeElementFromPosition(IMapElement element, Vector2d position) {
+    List<IMapElement> elementsAtPosition = this.elementsByPosition.get(position);
+    elementsAtPosition.remove(element);
+    if (elementsAtPosition.isEmpty()) {
+      this.elementsByPosition.remove(position);
+    }
   }
 }

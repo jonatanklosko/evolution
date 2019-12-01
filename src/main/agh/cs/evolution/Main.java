@@ -10,7 +10,7 @@ public class Main {
     simulation.initialize(40);
 //    new AppGui(simulation);
     long startTime = System.nanoTime();
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 10000; i++) {
       long animalCount = simulation.livingGenomes$().count();
       if (animalCount == 0) {
         System.out.println("All animals died");

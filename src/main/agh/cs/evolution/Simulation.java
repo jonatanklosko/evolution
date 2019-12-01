@@ -48,9 +48,7 @@ public class Simulation {
           animal.rotate();
           Vector2d move = animal.moveVector();
           Vector2d newPosition = this.map.shiftIntoBounds(animal.getPosition().add(move));
-          this.map.removeElement(animal);
           animal.moveTo(newPosition);
-          this.map.addElement(animal);
           animal.addEnergy(-this.moveEnergy);
         });
   }
