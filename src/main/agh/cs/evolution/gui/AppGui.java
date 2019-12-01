@@ -5,9 +5,13 @@ import agh.cs.evolution.MapWithJungle;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class AppGui extends JFrame {
-  Simulation simulation;
+  private Simulation simulation;
+  private JLabel animalCountLabel;
+  private JLabel daysPassedLabel;
+  private WorldMapGrid worldMapGrid;
 
   public AppGui(Simulation simulation) {
     super("Evolution");
@@ -16,32 +20,45 @@ public class AppGui extends JFrame {
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-    WorldMapGrid mapGrid = new WorldMapGrid(map);
-
-    // Buttons
-    JToolBar tools = new JToolBar();
-    tools.setFloatable(false);
-    this.add(tools, BorderLayout.PAGE_START);
+    // Toolbar
+    JToolBar toolbar = new JToolBar();
+    toolbar.setFloatable(false);
+    this.add(toolbar, BorderLayout.PAGE_START);
     JButton nextDayButton = new JButton("Next day");
     JButton nextYearButton = new JButton("Next year");
-    tools.add(nextDayButton);
-    tools.add(nextYearButton);
+    this.animalCountLabel = new JLabel("");
+    this.daysPassedLabel = new JLabel("");
+    toolbar.add(nextDayButton);
+    toolbar.add(nextYearButton);
+    toolbar.addSeparator();
+    toolbar.add(this.daysPassedLabel);
+    toolbar.addSeparator();
+    toolbar.add(this.animalCountLabel);
     nextDayButton.addActionListener(event -> {
       simulation.nextDay();
-      mapGrid.updateIcons();
-      System.out.println(this.simulation.getVisualization());
+      this.update();
     });
     nextYearButton.addActionListener(event -> {
       for (int i = 0; i <= 365; i++) {
         simulation.nextDay();
       }
-      mapGrid.updateIcons();
-      System.out.println(this.simulation.getVisualization());
+      this.update();
     });
 
     // Map
-    this.add(mapGrid);
+    this.worldMapGrid = new WorldMapGrid(map);
+    this.add(this.worldMapGrid);
+
+    this.update();
 
     this.setVisible(true);
+  }
+
+  private void update() {
+    long animalCount = simulation.livingGenomes$().count();
+    this.daysPassedLabel.setText("Days passed: " + simulation.getDaysPassed());
+    this.animalCountLabel.setText("Animals: " + animalCount);
+    this.worldMapGrid.updateIcons();
+    System.out.println(this.simulation.getVisualization());
   }
 }

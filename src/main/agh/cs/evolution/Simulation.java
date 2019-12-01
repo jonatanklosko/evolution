@@ -10,6 +10,7 @@ public class Simulation {
   private final int plantEnergy;
   private final MapWithJungle map;
   private MapVisualizer mapVisualizer;
+  private int daysPassed;
 
   public Simulation(int width, int height, int startEnergy, int moveEnergy, int plantEnergy, double jungleRatio) {
     this.map = new MapWithJungle(width, height, jungleRatio);
@@ -17,6 +18,7 @@ public class Simulation {
     this.moveEnergy = moveEnergy;
     this.plantEnergy = plantEnergy;
     this.mapVisualizer = new MapVisualizer(this.map);
+    this.daysPassed = 0;
   }
 
   public void initialize(int numberOfAnimals) {
@@ -32,6 +34,7 @@ public class Simulation {
      this.eat();
      this.reproduce();
      this.generatePlants();
+     this.daysPassed++;
   }
 
   public void removeDeadAnimals() {
@@ -129,5 +132,9 @@ public class Simulation {
 
   public MapWithJungle getMap() {
     return this.map;
+  }
+
+  public int getDaysPassed() {
+    return this.daysPassed;
   }
 }
