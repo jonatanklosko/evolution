@@ -6,6 +6,7 @@ import agh.cs.evolution.MapWithJungle;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.stream.Collectors;
 
 public class AppGui extends JFrame {
   private Simulation simulation;
@@ -26,10 +27,12 @@ public class AppGui extends JFrame {
     this.add(toolbar, BorderLayout.PAGE_START);
     JButton nextDayButton = new JButton("Next day");
     JButton nextYearButton = new JButton("Next year");
+    JButton showLivingGenomesButton = new JButton("Show living genomes");
     this.animalCountLabel = new JLabel("");
     this.daysPassedLabel = new JLabel("");
     toolbar.add(nextDayButton);
     toolbar.add(nextYearButton);
+    toolbar.add(showLivingGenomesButton);
     toolbar.addSeparator();
     toolbar.add(this.daysPassedLabel);
     toolbar.addSeparator();
@@ -43,6 +46,26 @@ public class AppGui extends JFrame {
         simulation.nextDay();
       }
       this.update();
+    });
+    showLivingGenomesButton.addActionListener(event -> {
+      String genomes = this.simulation.livingGenomes$()
+          .collect(Collectors.groupingBy(genome -> genome, Collectors.counting()))
+          .entrySet()
+          .stream()
+          .map(entry -> {
+            return String.format(
+                "%d %s with genome: %s",
+                entry.getValue(),
+                entry.getValue() == 1 ? "animal" : "animals",
+                entry.getKey()
+            );
+          })
+          .collect(Collectors.joining("\n"));
+      JTextArea textArea = new JTextArea(30, 50);
+      textArea.setText(genomes);
+      textArea.setEditable(false);
+      JScrollPane scrollPane = new JScrollPane(textArea);
+      JOptionPane.showMessageDialog(null, scrollPane, "Living genomes", JOptionPane.INFORMATION_MESSAGE);
     });
 
     // Map
