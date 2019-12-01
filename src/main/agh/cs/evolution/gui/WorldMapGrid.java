@@ -19,7 +19,7 @@ public class WorldMapGrid extends JPanel {
     this.setLayout(new GridLayout(height, width));
     for (int i = 1; i <= width * height; i++) {
       JLabel label = new JLabel("", SwingConstants.CENTER);
-      label.setBorder(new LineBorder(Color.LIGHT_GRAY));
+      label.setBorder(BorderFactory.createDashedBorder(new Color(220, 220, 220)));
       label.setHorizontalTextPosition(JLabel.CENTER);
       label.setVerticalTextPosition(JLabel.CENTER);
       label.setForeground(Color.BLACK);

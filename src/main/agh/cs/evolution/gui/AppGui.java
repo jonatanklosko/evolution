@@ -16,7 +16,6 @@ public class AppGui extends JFrame {
   public AppGui(Simulation simulation) {
     super("Evolution");
     this.simulation = simulation;
-    MapWithJungle map = this.simulation.getMap();
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -26,6 +25,7 @@ public class AppGui extends JFrame {
     this.add(toolbar, BorderLayout.PAGE_START);
     JButton nextDayButton = new JButton("Next day");
     JButton nextYearButton = new JButton("Next year");
+    JButton resetButton = new JButton("Reset");
     JButton showLivingGenomesButton = new JButton("Show living genomes");
     this.animalCountLabel = new JLabel("");
     this.daysPassedLabel = new JLabel("");
@@ -36,6 +36,8 @@ public class AppGui extends JFrame {
     toolbar.add(this.daysPassedLabel);
     toolbar.addSeparator();
     toolbar.add(this.animalCountLabel);
+    toolbar.add(Box.createHorizontalGlue());
+    toolbar.add(resetButton);
     nextDayButton.addActionListener(event -> {
       simulation.nextDay();
       this.update();
@@ -51,14 +53,12 @@ public class AppGui extends JFrame {
           .collect(Collectors.groupingBy(genome -> genome, Collectors.counting()))
           .entrySet()
           .stream()
-          .map(entry -> {
-            return String.format(
-                "%d %s with genome: %s",
-                entry.getValue(),
-                entry.getValue() == 1 ? "animal" : "animals",
-                entry.getKey()
-            );
-          })
+          .map(entry -> String.format(
+              "%d %s with genome: %s",
+              entry.getValue(),
+              entry.getValue() == 1 ? "animal" : "animals",
+              entry.getKey()
+          ))
           .collect(Collectors.joining("\n"));
       JTextArea textArea = new JTextArea(30, 60);
       textArea.setText(genomes);
@@ -66,9 +66,12 @@ public class AppGui extends JFrame {
       JScrollPane scrollPane = new JScrollPane(textArea);
       JOptionPane.showMessageDialog(null, scrollPane, "Living genomes", JOptionPane.INFORMATION_MESSAGE);
     });
+    resetButton.addActionListener(event -> {
+      // TODO: implement resetting
+    });
 
     // Map
-    this.worldMapGrid = new WorldMapGrid(map);
+    this.worldMapGrid = new WorldMapGrid(this.simulation.getMap());
     this.add(this.worldMapGrid);
 
     this.update();
@@ -77,10 +80,9 @@ public class AppGui extends JFrame {
   }
 
   private void update() {
-    long animalCount = simulation.livingGenomes$().count();
-    this.daysPassedLabel.setText("Days passed: " + simulation.getDaysPassed());
+    long animalCount = this.simulation.livingGenomes$().count();
+    this.daysPassedLabel.setText("Days passed: " + this.simulation.getDaysPassed());
     this.animalCountLabel.setText("Animals: " + animalCount);
     this.worldMapGrid.update();
-    System.out.println(this.simulation.getVisualization());
   }
 }
