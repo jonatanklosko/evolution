@@ -6,30 +6,32 @@ public class MapVisualizer {
   private static final String EMPTY_CELL = " ";
   private static final String FRAME_SEGMENT = "-";
   private static final String CELL_SEGMENT = "|";
-  private WorldMap map;
+  private IWorldMap map;
 
-  public MapVisualizer(WorldMap map) {
+  public MapVisualizer(IWorldMap map) {
     this.map = map;
   }
 
-  public String draw(Vector2d lowerLeft, Vector2d upperRight) {
+  public String draw() {
+    Vector2d lowerLeft = this.map.getLowerLeft();
+    Vector2d upperRight = this.map.getUpperRight();
     StringBuilder builder = new StringBuilder();
     int width = upperRight.x - lowerLeft.x + 1;
     String horizontalFrame = " ".repeat(4) + FRAME_SEGMENT.repeat(1 + 2 * width) + System.lineSeparator();
     builder.append(horizontalFrame);
-    for (int i = upperRight.y; i >= lowerLeft.y; i--) {
-      builder.append(String.format("%3d ", i));
-      for (int j = lowerLeft.x; j <= upperRight.x; j++) {
+    for (int y = upperRight.y; y >= lowerLeft.y; y--) {
+      builder.append(String.format("%3d ", y));
+      for (int x = lowerLeft.x; x <= upperRight.x; x++) {
         builder.append(CELL_SEGMENT);
-        builder.append(drawMapElement(new Vector2d(j, i)));
+        builder.append(drawMapElement(new Vector2d(x, y)));
       }
       builder.append(CELL_SEGMENT);
       builder.append(System.lineSeparator());
     }
     builder.append(horizontalFrame);
     builder.append(" ".repeat(4));
-    for (int i = lowerLeft.x; i <= upperRight.x; i++) {
-      builder.append(String.format("%2d", i));
+    for (int x = lowerLeft.x; x <= upperRight.x; x++) {
+      builder.append(String.format("%2d", x));
     }
     builder.append(System.lineSeparator());
     return builder.toString();

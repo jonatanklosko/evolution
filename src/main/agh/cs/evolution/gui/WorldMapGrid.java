@@ -8,31 +8,37 @@ import java.awt.*;
 import java.util.List;
 
 public class WorldMapGrid extends JPanel {
-  private WorldMap map;
+  private IWorldMap map;
 
-  public WorldMapGrid(WorldMap map) {
+  public WorldMapGrid(IWorldMap map) {
     this.map = map;
-    this.setLayout(new GridLayout(map.height, map.width));
-    for (int i = map.height - 1; i >= 0; i--) {
-      for (int j = 0; j < map.width; j++) {
-        JLabel label = new JLabel("", SwingConstants.CENTER);
-        label.setBorder(new LineBorder(Color.LIGHT_GRAY));
-        label.setHorizontalTextPosition(JLabel.CENTER);
-        label.setVerticalTextPosition(JLabel.CENTER);
-        label.setForeground(Color.BLACK);
-        this.add(label);
-      }
+    Vector2d lowerLeft = map.getLowerLeft();
+    Vector2d upperRight = map.getUpperRight();
+    int width = upperRight.x - lowerLeft.x + 1;
+    int height = upperRight.y - lowerLeft.y + 1;
+    this.setLayout(new GridLayout(height, width));
+    for (int i = 1; i <= width * height; i++) {
+      JLabel label = new JLabel("", SwingConstants.CENTER);
+      label.setBorder(new LineBorder(Color.LIGHT_GRAY));
+      label.setHorizontalTextPosition(JLabel.CENTER);
+      label.setVerticalTextPosition(JLabel.CENTER);
+      label.setForeground(Color.BLACK);
+      this.add(label);
     }
     this.updateIcons();
   }
 
   public void updateIcons() {
-    for (int i = map.height - 1; i >= 0; i--) {
-      for (int j = 0; j < map.width; j++) {
-        Vector2d position = new Vector2d(j, i);
+    Vector2d lowerLeft = map.getLowerLeft();
+    Vector2d upperRight = map.getUpperRight();
+    int width = upperRight.x - lowerLeft.x + 1;
+    int height = upperRight.y - lowerLeft.y + 1;
+    for (int y = upperRight.y; y >= lowerLeft.y; y--) {
+      for (int x = lowerLeft.x; x <= upperRight.x; x++) {
+        Vector2d position = new Vector2d(x, y);
         ImageIcon icon = this.elementIcon(position);
         String text = this.elementText(position);
-        JLabel label = (JLabel) this.getComponent((map.height - i - 1) * map.width + j);
+        JLabel label = (JLabel) this.getComponent((height - y - 1) * width + x);
         label.setIcon(icon);
         label.setText(text);
       }

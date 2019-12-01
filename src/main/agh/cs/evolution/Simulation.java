@@ -118,10 +118,7 @@ public class Simulation {
   }
 
   public String getVisualization() {
-    return this.mapVisualizer.draw(
-        new Vector2d(0, 0),
-        new Vector2d(this.map.width - 1, this.map.height - 1)
-    );
+    return this.mapVisualizer.draw();
   }
 
   private Stream<Animal> animals$() {

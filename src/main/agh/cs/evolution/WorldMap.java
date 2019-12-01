@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class WorldMap implements IPositionChangeObserver {
+public class WorldMap implements IWorldMap, IPositionChangeObserver {
   public final int width;
   public final int height;
   private Map<Vector2d, List<IMapElement>> elementsByPosition;
@@ -46,6 +46,14 @@ public class WorldMap implements IPositionChangeObserver {
 
   public List<IMapElement> elementsAt(Vector2d position) {
     return this.elementsByPosition.getOrDefault(position, new LinkedList<>());
+  }
+
+  public Vector2d getLowerLeft() {
+    return new Vector2d(0, 0);
+  }
+
+  public Vector2d getUpperRight() {
+    return new Vector2d(this.width - 1, this.height - 1);
   }
 
   public Stream<IMapElement> elements$() {
