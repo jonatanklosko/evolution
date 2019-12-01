@@ -35,6 +35,10 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     return this.genome;
   }
 
+  public int getMinReproductionEnergy() {
+    return this.minReproductionEnergy;
+  }
+
   public boolean isDead() {
     return this.energy == 0;
   }

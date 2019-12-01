@@ -38,9 +38,11 @@ public class WorldMapGrid extends JPanel {
         Vector2d position = new Vector2d(x, y);
         ImageIcon icon = this.elementIcon(position);
         String text = this.elementText(position);
+        String tooltipText = this.elementTooltipText(position);
         JLabel label = (JLabel) this.getComponent((height - y - 1) * width + x);
         label.setIcon(icon);
         label.setText(text);
+        label.setToolTipText(tooltipText);
       }
     }
   }
@@ -61,5 +63,19 @@ public class WorldMapGrid extends JPanel {
   private String elementText(Vector2d currentPosition) {
     int numberOfElements = this.map.elementsAt(currentPosition).size();
     return numberOfElements > 1 ? String.valueOf(numberOfElements) : null;
+  }
+
+  private String elementTooltipText(Vector2d currentPosition) {
+    List<IMapElement> elements = this.map.elementsAt(currentPosition);
+    if (elements.size() == 0) return null;
+    if (elements.size() > 1) {
+      return String.format("%d animals", elements.size());
+    }
+    IMapElement element = elements.get(0);
+    if (element instanceof Animal) {
+      Animal animal = (Animal) element;
+      return String.format("<html>Energy: %d<br>Min. reproduction energy: %d</html>", animal.getEnergy(), animal.getMinReproductionEnergy());
+    }
+    return null;
   }
 }
