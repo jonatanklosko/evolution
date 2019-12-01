@@ -25,10 +25,10 @@ public class WorldMapGrid extends JPanel {
       label.setForeground(Color.BLACK);
       this.add(label);
     }
-    this.updateIcons();
+    this.update();
   }
 
-  public void updateIcons() {
+  public void update() {
     Vector2d lowerLeft = map.getLowerLeft();
     Vector2d upperRight = map.getUpperRight();
     int width = upperRight.x - lowerLeft.x + 1;
@@ -36,46 +36,41 @@ public class WorldMapGrid extends JPanel {
     for (int y = upperRight.y; y >= lowerLeft.y; y--) {
       for (int x = lowerLeft.x; x <= upperRight.x; x++) {
         Vector2d position = new Vector2d(x, y);
-        ImageIcon icon = this.elementIcon(position);
-        String text = this.elementText(position);
-        String tooltipText = this.elementTooltipText(position);
         JLabel label = (JLabel) this.getComponent((height - y - 1) * width + x);
-        label.setIcon(icon);
-        label.setText(text);
-        label.setToolTipText(tooltipText);
+        this.updateLabel(label, position);
       }
     }
   }
 
-  private ImageIcon elementIcon(Vector2d currentPosition) {
-    List<IMapElement> elements = this.map.elementsAt(currentPosition);
-    if (elements.size() == 0) return null;
-    IMapElement element = elements.get(0);
-    if (element instanceof Plant) {
-      return new ImageIcon(getClass().getResource("images/plant.png"));
+  private void updateLabel(JLabel label, Vector2d position) {
+    List<IMapElement> elements = this.map.elementsAt(position);
+    int elementCount = elements.size();
+    label.setIcon(null);
+    label.setToolTipText(null);
+    label.setText(null);
+    if (elementCount == 1) {
+      IMapElement element = elements.get(0);
+      if (element instanceof Plant) {
+        ImageIcon icon = new ImageIcon(getClass().getResource("images/plant.png"));
+        label.setIcon(icon);
+      }
+      if (element instanceof Animal) {
+        Animal animal = (Animal) element;
+        ImageIcon icon = new ImageIcon(getClass().getResource("images/animal.png"));
+        String tooltipText = String.format(
+            "<html>Energy: %d<br>Min. reproduction energy: %d</html>",
+            animal.getEnergy(),
+            animal.getMinReproductionEnergy()
+        );
+        label.setIcon(icon);
+        label.setToolTipText(tooltipText);
+      }
+    } else if (elementCount > 1) {
+      ImageIcon icon = new ImageIcon(getClass().getResource("images/animal.png"));
+      String tooltipText = String.format("%d animals", elementCount);
+      label.setIcon(icon);
+      label.setToolTipText(tooltipText);
+      label.setText(String.valueOf(elementCount));
     }
-    if (element instanceof Animal) {
-      return new ImageIcon(getClass().getResource("images/animal.png"));
-    }
-    return null;
-  }
-
-  private String elementText(Vector2d currentPosition) {
-    int numberOfElements = this.map.elementsAt(currentPosition).size();
-    return numberOfElements > 1 ? String.valueOf(numberOfElements) : null;
-  }
-
-  private String elementTooltipText(Vector2d currentPosition) {
-    List<IMapElement> elements = this.map.elementsAt(currentPosition);
-    if (elements.size() == 0) return null;
-    if (elements.size() > 1) {
-      return String.format("%d animals", elements.size());
-    }
-    IMapElement element = elements.get(0);
-    if (element instanceof Animal) {
-      Animal animal = (Animal) element;
-      return String.format("<html>Energy: %d<br>Min. reproduction energy: %d</html>", animal.getEnergy(), animal.getMinReproductionEnergy());
-    }
-    return null;
   }
 }

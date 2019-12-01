@@ -5,7 +5,6 @@ import agh.cs.evolution.MapWithJungle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.stream.Collectors;
 
 public class AppGui extends JFrame {
@@ -81,7 +80,7 @@ public class AppGui extends JFrame {
     long animalCount = simulation.livingGenomes$().count();
     this.daysPassedLabel.setText("Days passed: " + simulation.getDaysPassed());
     this.animalCountLabel.setText("Animals: " + animalCount);
-    this.worldMapGrid.updateIcons();
+    this.worldMapGrid.update();
     System.out.println(this.simulation.getVisualization());
   }
 }
