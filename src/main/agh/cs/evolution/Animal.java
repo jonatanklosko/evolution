@@ -67,10 +67,10 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
 
   public Animal childWith(Animal other, List<Vector2d> possibleChildPositions) {
     Genome childGenome = this.genome.combine(other.genome);
-    int childEnergy = (int) (0.25 * this.energy + 0.25 * other.energy);
+    int childEnergy = this.energy / 4 + other.energy / 4;
     Vector2d childPosition = RandomUtils.randomElement(possibleChildPositions);
-    this.energy *= 0.75;
-    other.energy *= 0.75;
+    this.addEnergy(-this.energy / 4);
+    other.addEnergy(-other.energy / 4);
     return new Animal(childPosition, childEnergy, childGenome);
   }
 
