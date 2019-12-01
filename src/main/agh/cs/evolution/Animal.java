@@ -40,7 +40,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
   }
 
   public boolean isDead() {
-    return this.energy == 0;
+    return this.energy <= 0;
   }
 
   public void rotate() {

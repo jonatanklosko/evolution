@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class Main {
   public static void main(String[] args) {
-    Simulation simulation = new Simulation(50, 25, 30, 2, 8, 0.3);
+    Simulation simulation = new Simulation(50, 25, 60, 2, 30, 0.3);
     simulation.initialize(40);
 //    new AppGui(simulation);
     long startTime = System.nanoTime();
