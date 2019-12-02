@@ -11,7 +11,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
   private List<IPositionChangeObserver> positionChangeObservers;
 
   public Animal(Vector2d position, int energy) {
-    this(position, energy, new Genome());
+    this(position, energy, Genome.randomGenome());
   }
 
   public Animal(Vector2d position, int energy, Genome genome) {

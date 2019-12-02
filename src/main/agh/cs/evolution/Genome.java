@@ -8,25 +8,12 @@ public class Genome {
   public static final int GENOME_SIZE = 32;
   private final List<Byte> genes;
 
-  public Genome() {
-    this.genes = generateRandomGenes();
-  }
-
-  public Genome(List<Byte> genes) {
-    if (genes.size() != GENOME_SIZE) {
-      throw new IllegalArgumentException(
-          String.format("Genome must have %d genes, given %d.", GENOME_SIZE, genes.size())
-      );
-    }
+  private Genome(List<Byte> genes) {
     this.genes = genes;
   }
 
-  @Override
-  public String toString() {
-    String genesString = this.genes.stream()
-        .map(String::valueOf)
-        .collect(Collectors.joining(" "));
-    return String.format("Genome{%s}", genesString);
+  public static Genome randomGenome() {
+    return new Genome(Genome.randomGenes());
   }
 
   public Byte getRandomGene() {
@@ -44,7 +31,7 @@ public class Genome {
     return new Genome(combinedGenes);
   }
 
-  private static List<Byte> generateRandomGenes() {
+  private static List<Byte> randomGenes() {
     List<Byte> randomGenes = RandomUtils.random.ints(0, 8)
         .limit(GENOME_SIZE)
         .boxed()
@@ -69,6 +56,14 @@ public class Genome {
           genes.set(RandomUtils.randomElement(availableIndices), missingGene);
         });
     Collections.sort(genes);
+  }
+
+  @Override
+  public String toString() {
+    String genesString = this.genes.stream()
+        .map(String::valueOf)
+        .collect(Collectors.joining(" "));
+    return String.format("Genome{%s}", genesString);
   }
 
   @Override
