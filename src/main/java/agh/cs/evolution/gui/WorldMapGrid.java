@@ -51,12 +51,12 @@ public class WorldMapGrid extends JPanel {
     if (elementCount == 1) {
       IMapElement element = elements.get(0);
       if (element instanceof Plant) {
-        ImageIcon icon = new ImageIcon(getClass().getResource("images/plant.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/plant.png"));
         label.setIcon(icon);
       }
       if (element instanceof Animal) {
         Animal animal = (Animal) element;
-        ImageIcon icon = new ImageIcon(getClass().getResource("images/animal.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/animal.png"));
         String tooltipText = String.format(
             "<html>Energy: %d<br>Min. reproduction energy: %d</html>",
             animal.getEnergy(),
@@ -66,7 +66,7 @@ public class WorldMapGrid extends JPanel {
         label.setToolTipText(tooltipText);
       }
     } else if (elementCount > 1) {
-      ImageIcon icon = new ImageIcon(getClass().getResource("images/animal.png"));
+      ImageIcon icon = new ImageIcon(getClass().getResource("/images/animal.png"));
       String tooltipText = String.format("%d animals", elementCount);
       label.setIcon(icon);
       label.setToolTipText(tooltipText);
