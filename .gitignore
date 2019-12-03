@@ -1,6 +1,1 @@
-# IntelliJ specific failes.
-.idea/
-out/
-*.iml
-# Compiled class files
-*.class
+target/

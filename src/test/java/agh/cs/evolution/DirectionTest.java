@@ -1,4 +1,5 @@
-import agh.cs.evolution.Direction;
+package agh.cs.evolution;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

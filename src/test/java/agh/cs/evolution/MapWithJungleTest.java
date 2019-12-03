@@ -1,3 +1,5 @@
+package agh.cs.evolution;
+
 import agh.cs.evolution.*;
 import org.junit.jupiter.api.Test;
 
