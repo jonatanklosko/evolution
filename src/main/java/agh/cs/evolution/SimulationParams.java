@@ -27,13 +27,11 @@ public class SimulationParams {
     this.initialNumberOfAnimals = initialNumberOfAnimals;
   }
 
-  public static SimulationParams fromFile(String path) {
-    SimulationParams simulationParams = null;
+  public static SimulationParams fromFile(String path) throws IOException {
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
-      simulationParams = SimulationParams.gson.fromJson(bufferedReader, SimulationParams.class);
+      return SimulationParams.gson.fromJson(bufferedReader, SimulationParams.class);
     } catch (IOException error) {
-      System.out.println(error);
+      throw error;
     }
-    return simulationParams;
   }
 }
