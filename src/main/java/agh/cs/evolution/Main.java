@@ -4,8 +4,8 @@ import java.util.stream.Collectors;
 
 public class Main {
   public static void main(String[] args) {
-    Simulation simulation = new Simulation(50, 25, 60, 2, 30, 0.3);
-    simulation.initialize(40);
+    SimulationParams simulationParams = SimulationParams.fromFile("src/main/resources/parameters.json");
+    Simulation simulation = new Simulation(simulationParams);
     long startTime = System.nanoTime();
     for (int i = 0; i < 10000; i++) {
       long animalCount = simulation.livingGenomes$().count();

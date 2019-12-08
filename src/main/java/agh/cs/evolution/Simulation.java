@@ -5,25 +5,22 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Simulation {
-  private final int startEnergy;
-  private final int moveEnergy;
-  private final int plantEnergy;
+  public final SimulationParams params;
   private final MapWithJungle map;
   private MapVisualizer mapVisualizer;
   private int daysPassed;
 
-  public Simulation(int width, int height, int startEnergy, int moveEnergy, int plantEnergy, double jungleRatio) {
-    this.map = new MapWithJungle(width, height, jungleRatio);
-    this.startEnergy = startEnergy;
-    this.moveEnergy = moveEnergy;
-    this.plantEnergy = plantEnergy;
+  public Simulation(SimulationParams params) {
+    this.params = params;
+    this.map = new MapWithJungle(params.width, params.height, params.jungleRatio);
     this.mapVisualizer = new MapVisualizer(this.map);
     this.daysPassed = 0;
+    this.initialize(params.initialNumberOfAnimals);
   }
 
-  public void initialize(int numberOfAnimals) {
+  private void initialize(int numberOfAnimals) {
     this.map.randomPositions$().distinct().limit(numberOfAnimals).forEach(position -> {
-      Animal animal = new Animal(position, this.startEnergy);
+      Animal animal = new Animal(position, this.params.startEnergy);
       this.map.addElement(animal);
     });
   }
@@ -52,7 +49,7 @@ public class Simulation {
           Vector2d move = animal.moveVector();
           Vector2d newPosition = this.map.shiftIntoBounds(animal.getPosition().add(move));
           animal.moveTo(newPosition);
-          animal.addEnergy(-this.moveEnergy);
+          animal.addEnergy(-this.params.moveEnergy);
         });
   }
 
@@ -105,12 +102,12 @@ public class Simulation {
     List<Vector2d> freeSteppePositions = freePositionsByJungle.get(false);
     if (!freeJunglePositions.isEmpty()) {
       Vector2d junglePlantPosition = RandomUtils.randomElement(freeJunglePositions);
-      Plant junglePlant = new Plant(junglePlantPosition, this.plantEnergy);
+      Plant junglePlant = new Plant(junglePlantPosition, this.params.plantEnergy);
       this.map.addElement(junglePlant);
     }
     if (!freeSteppePositions.isEmpty()) {
       Vector2d steppePlantPosition = RandomUtils.randomElement(freeSteppePositions);
-      Plant steppePlant = new Plant(steppePlantPosition, this.plantEnergy);
+      Plant steppePlant = new Plant(steppePlantPosition, this.params.plantEnergy);
       this.map.addElement(steppePlant);
     }
   }
