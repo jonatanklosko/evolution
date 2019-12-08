@@ -23,10 +23,6 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     this.positionChangeObservers = new LinkedList<>();
   }
 
-  public String symbolRepresentation() {
-    return this.direction.symbolRepresentation();
-  }
-
   public int getEnergy() {
     return this.energy;
   }

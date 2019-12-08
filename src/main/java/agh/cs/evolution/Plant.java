@@ -8,10 +8,6 @@ public class Plant extends AbstractMapElement {
     this.energy = energy;
   }
 
-  public String symbolRepresentation() {
-    return "⚘";
-  }
-
   public int getEnergy() {
     return this.energy;
   }

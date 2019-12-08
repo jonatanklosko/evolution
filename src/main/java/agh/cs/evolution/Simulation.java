@@ -7,13 +7,11 @@ import java.util.stream.Stream;
 public class Simulation {
   public final SimulationParams params;
   private final MapWithJungle map;
-  private MapVisualizer mapVisualizer;
   private int daysPassed;
 
   public Simulation(SimulationParams params) {
     this.params = params;
     this.map = new MapWithJungle(params.width, params.height, params.jungleRatio);
-    this.mapVisualizer = new MapVisualizer(this.map);
     this.daysPassed = 0;
     this.initialize(params.initialNumberOfAnimals);
   }
@@ -116,10 +114,6 @@ public class Simulation {
     return this.animals$()
         .filter(animal -> !animal.isDead())
         .map(Animal::getGenome);
-  }
-
-  public String textVisualization() {
-    return this.mapVisualizer.draw();
   }
 
   private Stream<Animal> animals$() {
