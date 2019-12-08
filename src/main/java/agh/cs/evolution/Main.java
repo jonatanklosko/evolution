@@ -15,12 +15,12 @@ public class Main {
       }
       if (i % 1000 == 0) {
         System.out.println(String.format("Days passed: %d\t Animals: %d", i, animalCount));
-        System.out.println(simulation.getVisualization());
+        System.out.println(simulation.textVisualization());
       }
       simulation.nextDay();
     }
     long endTime = System.nanoTime();
-    System.out.println(simulation.getVisualization());
+    System.out.println(simulation.textVisualization());
     System.out.println("Took: " + (endTime - startTime) / Math.pow(10, 9) + "s");
     System.out.println("Living genomes:");
     simulation.livingGenomes$()

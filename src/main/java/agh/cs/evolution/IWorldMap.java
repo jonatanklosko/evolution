@@ -7,6 +7,7 @@ public interface IWorldMap {
   void removeElement(IMapElement element);
   boolean isOccupied(Vector2d position);
   List<IMapElement> elementsAt(Vector2d position);
+  List<IMapElement> allElements();
   Vector2d getLowerLeft();
   Vector2d getUpperRight();
 }

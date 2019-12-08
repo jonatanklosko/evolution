@@ -70,8 +70,9 @@ public class Simulation {
               Collectors.groupingBy(Animal::getEnergy, TreeMap::new, Collectors.toList())
           );
       if (animalsByEnergy.isEmpty()) return;
-      animalsByEnergy.lastEntry().getValue().forEach(animal -> {
-        animal.addEnergy(plant.getEnergy() / animalsByEnergy.size());
+      List<Animal> animalsWithHighestEnergy = animalsByEnergy.lastEntry().getValue();
+      animalsWithHighestEnergy.forEach(animal -> {
+        animal.addEnergy(plant.getEnergy() / animalsWithHighestEnergy.size());
         this.map.removeElement(plant);
       });
     });
@@ -120,7 +121,7 @@ public class Simulation {
         .map(Animal::getGenome);
   }
 
-  public String getVisualization() {
+  public String textVisualization() {
     return this.mapVisualizer.draw();
   }
 

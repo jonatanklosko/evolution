@@ -1,6 +1,7 @@
 package agh.cs.evolution;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -46,6 +47,10 @@ public class MapWithJungle implements IWorldMap, IPositionChangeObserver {
 
   public List<IMapElement> elementsAt(Vector2d position) {
     return this.elementsByPosition.getOrDefault(position, new LinkedList<>());
+  }
+
+  public List<IMapElement> allElements() {
+    return this.elements$().collect(Collectors.toList());
   }
 
   public Vector2d getLowerLeft() {
