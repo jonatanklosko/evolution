@@ -6,7 +6,8 @@ import agh.cs.evolution.SimulationParams;
 public class Main {
   public static void main(String[] args) {
     try {
-      SimulationParams simulationParams = SimulationParams.fromFile("src/main/resources/parameters.json");
+      String parametersPath = args.length > 0 ? args[0] : "parameters.json";
+      SimulationParams simulationParams = SimulationParams.fromFile(parametersPath);
       Simulation simulation = new Simulation(simulationParams);
       new AppGui(simulation);
     } catch (Exception error) {
