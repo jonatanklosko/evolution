@@ -18,7 +18,7 @@ public class Simulation {
 
   private void initialize(int numberOfAnimals) {
     this.map.randomPositions$().distinct().limit(numberOfAnimals).forEach(position -> {
-      Animal animal = new Animal(position, this.params.startEnergy);
+      Animal animal = new Animal(position, this.params.startEnergy, this.params.startEnergy / 2);
       this.map.addElement(animal);
     });
   }

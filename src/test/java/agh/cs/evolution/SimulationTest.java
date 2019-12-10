@@ -13,10 +13,10 @@ public class SimulationTest {
   public void removeDeadAnimalsShouldRemoveDeadAnimalsFromMap() {
     Simulation simulation = new Simulation(SimulationTest.params);
     IWorldMap map = simulation.getMap();
-    Animal aliveAnimal = new Animal(new Vector2d(0, 0), 1);
+    Animal aliveAnimal = new Animal(new Vector2d(0, 0), 1, 5);
     map.addElement(aliveAnimal);
-    map.addElement(new Animal(new Vector2d(0, 0), 0));
-    map.addElement(new Animal(new Vector2d(0, 0), -1));
+    map.addElement(new Animal(new Vector2d(0, 0), 0, 5));
+    map.addElement(new Animal(new Vector2d(0, 0), -1, 5));
     simulation.removeDeadAnimals();
     assertEquals(List.of(aliveAnimal), map.elementsAt(new Vector2d(0, 0)));
   }
@@ -25,7 +25,7 @@ public class SimulationTest {
   public void eatRemovesPlantAndIncreasesAnimalEnergy() {
     Simulation simulation = new Simulation(SimulationTest.params);
     IWorldMap map = simulation.getMap();
-    Animal animal = new Animal(new Vector2d(0, 0), 10);
+    Animal animal = new Animal(new Vector2d(0, 0), 10, 5);
     Plant plant = new Plant(new Vector2d(0, 0), 10);
     map.addElement(animal);
     map.addElement(plant);
@@ -38,9 +38,9 @@ public class SimulationTest {
   public void eatPrioritizesAnimalWithHighestEnergy() {
     Simulation simulation = new Simulation(SimulationTest.params);
     IWorldMap map = simulation.getMap();
-    Animal animal1 = new Animal(new Vector2d(0, 0), 5);
-    Animal animal2 = new Animal(new Vector2d(0, 0), 15);
-    Animal animal3 = new Animal(new Vector2d(0, 0), 10);
+    Animal animal1 = new Animal(new Vector2d(0, 0), 5, 5);
+    Animal animal2 = new Animal(new Vector2d(0, 0), 15, 5);
+    Animal animal3 = new Animal(new Vector2d(0, 0), 10, 5);
     Plant plant = new Plant(new Vector2d(0, 0), 10);
     map.addElement(animal1);
     map.addElement(animal2);
@@ -56,8 +56,8 @@ public class SimulationTest {
   public void eatSplitsPlantEnergyIfManyAnimalsHaveMaxEnergy() {
     Simulation simulation = new Simulation(SimulationTest.params);
     IWorldMap map = simulation.getMap();
-    Animal animal1 = new Animal(new Vector2d(0, 0), 10);
-    Animal animal2 = new Animal(new Vector2d(0, 0), 10);
+    Animal animal1 = new Animal(new Vector2d(0, 0), 10, 5);
+    Animal animal2 = new Animal(new Vector2d(0, 0), 10, 5);
     Plant plant = new Plant(new Vector2d(0, 0), 10);
     map.addElement(animal1);
     map.addElement(animal2);
@@ -71,9 +71,9 @@ public class SimulationTest {
   public void reproduceConsidersOnlyTwoAnimalsWithMaxEnergyAsParents() {
     Simulation simulation = new Simulation(SimulationTest.params);
     IWorldMap map = simulation.getMap();
-    Animal animal1 = new Animal(new Vector2d(0, 0), 5);
-    Animal animal2 = new Animal(new Vector2d(0, 0), 15);
-    Animal animal3 = new Animal(new Vector2d(0, 0), 10);
+    Animal animal1 = new Animal(new Vector2d(0, 0), 5, 5);
+    Animal animal2 = new Animal(new Vector2d(0, 0), 15, 5);
+    Animal animal3 = new Animal(new Vector2d(0, 0), 10, 5);
     map.addElement(animal1);
     map.addElement(animal2);
     map.addElement(animal3);
@@ -88,14 +88,13 @@ public class SimulationTest {
   public void reproduceDoesNotReproduceIfAnimalsDoNotHaveSufficientEnergy() {
     Simulation simulation = new Simulation(SimulationTest.params);
     IWorldMap map = simulation.getMap();
-    Animal animal1 = new Animal(new Vector2d(0, 0), 10);
-    Animal animal2 = new Animal(new Vector2d(0, 0), 10);
+    Animal animal1 = new Animal(new Vector2d(0, 0), 10, 20);
+    Animal animal2 = new Animal(new Vector2d(0, 0), 10, 5);
     map.addElement(animal1);
     map.addElement(animal2);
-    animal1.addEnergy(-8);
     simulation.reproduce();
     assertEquals(List.of(animal1, animal2), map.allElements());
-    assertEquals(2, animal1.getEnergy());
+    assertEquals(10, animal1.getEnergy());
     assertEquals(10, animal2.getEnergy());
   }
 
@@ -103,8 +102,8 @@ public class SimulationTest {
   public void generatePlantsDoesNotAddPlantsIfTheMapIsFull() {
     Simulation simulation = new Simulation(new SimulationParams(2, 2, 20, 2, 10, 0.2, 0));
     IWorldMap map = simulation.getMap();
-    Animal animal1 = new Animal(new Vector2d(0, 0), 10);
-    Animal animal2 = new Animal(new Vector2d(0, 1), 10);
+    Animal animal1 = new Animal(new Vector2d(0, 0), 10, 5);
+    Animal animal2 = new Animal(new Vector2d(0, 1), 10, 5);
     Plant plant1 = new Plant(new Vector2d(1, 0), 10);
     Plant plant2 = new Plant(new Vector2d(1, 1), 10);
     map.addElement(animal1);
@@ -119,9 +118,9 @@ public class SimulationTest {
   public void livingGenomesIgnoresDeadAnimals() {
     Simulation simulation = new Simulation(SimulationTest.params);
     IWorldMap map = simulation.getMap();
-    Animal animal1 = new Animal(new Vector2d(0, 0), 0);
-    Animal animal2 = new Animal(new Vector2d(0, 0), 10);
-    Animal animal3 = new Animal(new Vector2d(0, 0), -2);
+    Animal animal1 = new Animal(new Vector2d(0, 0), 0, 5);
+    Animal animal2 = new Animal(new Vector2d(0, 0), 10, 5);
+    Animal animal3 = new Animal(new Vector2d(0, 0), -2, 5);
     map.addElement(animal1);
     map.addElement(animal2);
     map.addElement(animal3);

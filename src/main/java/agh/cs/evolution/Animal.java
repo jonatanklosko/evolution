@@ -6,19 +6,19 @@ import java.util.List;
 public class Animal extends AbstractMapElement implements IPositionChangeSubject {
   private final Genome genome;
   private int energy;
-  private int minReproductionEnergy;
+  private final int minReproductionEnergy;
   private Direction direction;
   private List<IPositionChangeObserver> positionChangeObservers;
 
-  public Animal(Vector2d position, int energy) {
-    this(position, energy, Genome.randomGenome());
+  public Animal(Vector2d position, int energy, int minReproductionEnergy) {
+    this(position, energy, minReproductionEnergy, Genome.randomGenome());
   }
 
-  public Animal(Vector2d position, int energy, Genome genome) {
+  public Animal(Vector2d position, int energy, int minReproductionEnergy, Genome genome) {
     super(position);
     this.energy = energy;
     this.genome = genome;
-    this.minReproductionEnergy = energy / 2;
+    this.minReproductionEnergy = minReproductionEnergy;
     this.direction = Direction.randomDirection();
     this.positionChangeObservers = new LinkedList<>();
   }
@@ -67,7 +67,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     Vector2d childPosition = RandomUtils.randomElement(possibleChildPositions);
     this.addEnergy(-this.energy / 4);
     other.addEnergy(-other.energy / 4);
-    return new Animal(childPosition, childEnergy, childGenome);
+    return new Animal(childPosition, childEnergy, this.minReproductionEnergy, childGenome);
   }
 
   public void addPositionChangeObserver(IPositionChangeObserver observer) {
