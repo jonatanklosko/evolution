@@ -1,6 +1,10 @@
 package agh.cs.evolution;
 
-import agh.cs.evolution.*;
+import agh.cs.evolution.elements.Animal;
+import agh.cs.evolution.elements.IMapElement;
+import agh.cs.evolution.elements.Plant;
+import agh.cs.evolution.geometry.Vector2d;
+import agh.cs.evolution.map.MapWithJungle;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

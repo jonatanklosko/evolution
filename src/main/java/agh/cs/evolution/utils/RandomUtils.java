@@ -1,4 +1,4 @@
-package agh.cs.evolution;
+package agh.cs.evolution.utils;
 
 import java.util.List;
 import java.util.Random;

@@ -43,7 +43,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>agh.cs.evolution.gui.Main</mainClass>
+                            <mainClass>agh.cs.evolution.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

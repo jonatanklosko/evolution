@@ -1,4 +1,6 @@
-package agh.cs.evolution;
+package agh.cs.evolution.elements;
+
+import agh.cs.evolution.utils.RandomUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;

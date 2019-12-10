@@ -1,7 +1,7 @@
 package agh.cs.evolution.gui;
 
-import agh.cs.evolution.Simulation;
-import agh.cs.evolution.SimulationParams;
+import agh.cs.evolution.simulation.Simulation;
+import agh.cs.evolution.simulation.SimulationParams;
 
 import java.util.LinkedList;
 import java.util.List;

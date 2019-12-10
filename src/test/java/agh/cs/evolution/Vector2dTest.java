@@ -1,6 +1,6 @@
 package agh.cs.evolution;
 
-import agh.cs.evolution.*;
+import agh.cs.evolution.geometry.Vector2d;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

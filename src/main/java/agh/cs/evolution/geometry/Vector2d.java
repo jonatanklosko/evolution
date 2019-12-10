@@ -1,4 +1,4 @@
-package agh.cs.evolution;
+package agh.cs.evolution.geometry;
 
 import java.util.Objects;
 

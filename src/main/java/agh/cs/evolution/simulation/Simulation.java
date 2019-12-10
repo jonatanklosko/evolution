@@ -1,4 +1,13 @@
-package agh.cs.evolution;
+package agh.cs.evolution.simulation;
+
+import agh.cs.evolution.elements.Genome;
+import agh.cs.evolution.geometry.Vector2d;
+import agh.cs.evolution.elements.Animal;
+import agh.cs.evolution.elements.IMapElement;
+import agh.cs.evolution.elements.Plant;
+import agh.cs.evolution.map.MapWithJungle;
+import agh.cs.evolution.utils.RandomUtils;
+import agh.cs.evolution.utils.Utils;
 
 import java.util.*;
 import java.util.stream.Collectors;

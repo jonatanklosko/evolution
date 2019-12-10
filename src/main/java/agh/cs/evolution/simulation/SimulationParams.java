@@ -1,4 +1,4 @@
-package agh.cs.evolution;
+package agh.cs.evolution.simulation;
 
 import com.google.gson.Gson;
 

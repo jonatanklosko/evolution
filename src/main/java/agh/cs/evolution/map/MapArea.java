@@ -1,4 +1,6 @@
-package agh.cs.evolution;
+package agh.cs.evolution.map;
+
+import agh.cs.evolution.geometry.Vector2d;
 
 public class MapArea {
   private Vector2d lowerLeft;

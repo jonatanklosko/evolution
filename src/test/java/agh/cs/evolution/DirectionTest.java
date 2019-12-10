@@ -1,5 +1,6 @@
 package agh.cs.evolution;
 
+import agh.cs.evolution.geometry.Direction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,4 +1,6 @@
-package agh.cs.evolution;
+package agh.cs.evolution.geometry;
+
+import agh.cs.evolution.utils.RandomUtils;
 
 import java.util.Arrays;
 import java.util.HashMap;

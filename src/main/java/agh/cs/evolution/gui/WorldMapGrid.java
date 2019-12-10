@@ -1,9 +1,12 @@
 package agh.cs.evolution.gui;
 
-import agh.cs.evolution.*;
+import agh.cs.evolution.elements.Animal;
+import agh.cs.evolution.elements.IMapElement;
+import agh.cs.evolution.elements.Plant;
+import agh.cs.evolution.geometry.Vector2d;
+import agh.cs.evolution.map.IWorldMap;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.List;
 

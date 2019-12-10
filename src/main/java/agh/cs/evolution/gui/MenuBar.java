@@ -1,6 +1,6 @@
 package agh.cs.evolution.gui;
 
-import agh.cs.evolution.Simulation;
+import agh.cs.evolution.simulation.Simulation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

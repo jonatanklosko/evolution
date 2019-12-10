@@ -1,4 +1,7 @@
-package agh.cs.evolution;
+package agh.cs.evolution.map;
+
+import agh.cs.evolution.geometry.Vector2d;
+import agh.cs.evolution.elements.IMapElement;
 
 import java.util.List;
 

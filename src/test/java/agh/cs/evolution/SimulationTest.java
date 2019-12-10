@@ -1,5 +1,11 @@
 package agh.cs.evolution;
 
+import agh.cs.evolution.elements.Animal;
+import agh.cs.evolution.elements.Plant;
+import agh.cs.evolution.geometry.Vector2d;
+import agh.cs.evolution.map.IWorldMap;
+import agh.cs.evolution.simulation.Simulation;
+import agh.cs.evolution.simulation.SimulationParams;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

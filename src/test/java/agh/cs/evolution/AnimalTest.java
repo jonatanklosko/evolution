@@ -1,5 +1,7 @@
 package agh.cs.evolution;
 
+import agh.cs.evolution.elements.Animal;
+import agh.cs.evolution.geometry.Vector2d;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

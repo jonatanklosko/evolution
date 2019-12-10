@@ -1,4 +1,8 @@
-package agh.cs.evolution;
+package agh.cs.evolution.elements;
+
+import agh.cs.evolution.geometry.Direction;
+import agh.cs.evolution.geometry.Vector2d;
+import agh.cs.evolution.utils.RandomUtils;
 
 import java.util.LinkedList;
 import java.util.List;

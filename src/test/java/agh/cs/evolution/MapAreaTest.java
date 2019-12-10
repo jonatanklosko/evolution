@@ -1,5 +1,7 @@
 package agh.cs.evolution;
 
+import agh.cs.evolution.geometry.Vector2d;
+import agh.cs.evolution.map.MapArea;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

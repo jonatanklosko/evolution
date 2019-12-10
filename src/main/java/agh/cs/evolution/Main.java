@@ -1,6 +1,7 @@
-package agh.cs.evolution.gui;
+package agh.cs.evolution;
 
-import agh.cs.evolution.SimulationParams;
+import agh.cs.evolution.gui.AppGui;
+import agh.cs.evolution.simulation.SimulationParams;
 
 public class Main {
   public static void main(String[] args) {
