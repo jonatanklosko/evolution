@@ -42,7 +42,7 @@ public class Simulation {
   }
 
   public void nextYear() {
-    for (int i = 0; i <= 365; i++) {
+    for (int i = 1; i <= 365; i++) {
       this.nextDay();
     }
   }
