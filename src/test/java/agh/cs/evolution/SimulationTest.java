@@ -92,6 +92,7 @@ public class SimulationTest {
     Animal animal2 = new Animal(new Vector2d(0, 0), 10);
     map.addElement(animal1);
     map.addElement(animal2);
+    animal1.addEnergy(-8);
     simulation.reproduce();
     assertEquals(List.of(animal1, animal2), map.allElements());
     assertEquals(2, animal1.getEnergy());

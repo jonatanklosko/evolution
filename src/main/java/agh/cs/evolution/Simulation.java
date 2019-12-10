@@ -32,6 +32,12 @@ public class Simulation {
      this.daysPassed++;
   }
 
+  public void nextYear() {
+    for (int i = 0; i <= 365; i++) {
+      this.nextDay();
+    }
+  }
+
   public void removeDeadAnimals() {
     this.animals$()
         .filter(Animal::isDead)
@@ -53,23 +59,20 @@ public class Simulation {
 
   public void eat() {
     this.map.positionsWithElements$().map(Map.Entry::getValue).forEach(elementsAtPosition -> {
-      Plant plant = (Plant) elementsAtPosition.stream()
-          .filter(Plant.class::isInstance)
+      Utils.filterType(elementsAtPosition.stream(), Plant.class)
           .findAny()
-          .orElse(null);
-      if (plant == null) return;
-      TreeMap<Integer, List<Animal>> animalsByEnergy = elementsAtPosition.stream()
-          .filter(Animal.class::isInstance)
-          .map(Animal.class::cast)
-          .collect(
-              Collectors.groupingBy(Animal::getEnergy, TreeMap::new, Collectors.toList())
-          );
-      if (animalsByEnergy.isEmpty()) return;
-      List<Animal> animalsWithHighestEnergy = animalsByEnergy.lastEntry().getValue();
-      animalsWithHighestEnergy.forEach(animal -> {
-        animal.addEnergy(plant.getEnergy() / animalsWithHighestEnergy.size());
-        this.map.removeElement(plant);
-      });
+          .ifPresent(plant -> {
+            TreeMap<Integer, List<Animal>> animalsByEnergy = Utils.filterType(elementsAtPosition.stream(), Animal.class)
+                .collect(
+                    Collectors.groupingBy(Animal::getEnergy, TreeMap::new, Collectors.toList())
+                );
+            if (animalsByEnergy.isEmpty()) return;
+            List<Animal> animalsWithHighestEnergy = animalsByEnergy.lastEntry().getValue();
+            animalsWithHighestEnergy.forEach(animal -> {
+              animal.addEnergy(plant.getEnergy() / animalsWithHighestEnergy.size());
+              this.map.removeElement(plant);
+            });
+          });
     });
   }
 
@@ -79,9 +82,7 @@ public class Simulation {
         .forEach(positionWithElements -> {
           Vector2d position = positionWithElements.getKey();
           List<IMapElement> elementsAtPosition = positionWithElements.getValue();
-          List<Animal> animalPair = elementsAtPosition.stream()
-              .filter(Animal.class::isInstance)
-              .map(Animal.class::cast)
+          List<Animal> animalPair = Utils.filterType(elementsAtPosition.stream(), Animal.class)
               .filter(Animal::ableToReproduce)
               .sorted(Comparator.comparing(Animal::getEnergy).reversed())
               .limit(2)
@@ -117,9 +118,7 @@ public class Simulation {
   }
 
   private Stream<Animal> animals$() {
-    return this.map.elements$()
-        .filter(Animal.class::isInstance)
-        .map(Animal.class::cast);
+    return Utils.filterType(this.map.elements$(), Animal.class);
   }
 
   public MapWithJungle getMap() {
