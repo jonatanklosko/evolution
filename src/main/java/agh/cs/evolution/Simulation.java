@@ -50,7 +50,7 @@ public class Simulation {
         .collect(Collectors.toList()) /* Materialize the stream first as we remove elements. */
         .forEach(animal -> {
           animal.rotate();
-          Vector2d move = animal.moveVector();
+          Vector2d move = animal.getMoveVector();
           Vector2d newPosition = this.map.shiftIntoBounds(animal.getPosition().add(move));
           animal.moveTo(newPosition);
           animal.addEnergy(-this.params.moveEnergy);

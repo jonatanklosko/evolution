@@ -45,7 +45,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     this.direction = this.direction.compose(geneDirection);
   }
 
-  public Vector2d moveVector() {
+  public Vector2d getMoveVector() {
     return this.direction.toUnitVector();
   }
 
