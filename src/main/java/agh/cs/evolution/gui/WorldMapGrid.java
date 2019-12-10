@@ -8,10 +8,15 @@ import java.awt.*;
 import java.util.List;
 
 public class WorldMapGrid extends JPanel {
-  private IWorldMap map;
+  private Controller controller;
+  private ImageIcon plantIcon;
+  private ImageIcon animalIcon;
 
-  public WorldMapGrid(IWorldMap map) {
-    this.map = map;
+  public WorldMapGrid(Controller controller) {
+    this.controller = controller;
+    this.plantIcon = new ImageIcon(getClass().getResource("/images/plant.png"));
+    this.animalIcon = new ImageIcon(getClass().getResource("/images/animal.png"));
+    IWorldMap map = this.controller.getSimulation().getMap();
     Vector2d lowerLeft = map.getLowerLeft();
     Vector2d upperRight = map.getUpperRight();
     int width = upperRight.x - lowerLeft.x + 1;
@@ -29,6 +34,7 @@ public class WorldMapGrid extends JPanel {
   }
 
   public void update() {
+    IWorldMap map = this.controller.getSimulation().getMap();
     Vector2d lowerLeft = map.getLowerLeft();
     Vector2d upperRight = map.getUpperRight();
     int width = upperRight.x - lowerLeft.x + 1;
@@ -43,7 +49,8 @@ public class WorldMapGrid extends JPanel {
   }
 
   private void updateLabel(JLabel label, Vector2d position) {
-    List<IMapElement> elements = this.map.elementsAt(position);
+    IWorldMap map = this.controller.getSimulation().getMap();
+    List<IMapElement> elements = map.elementsAt(position);
     int elementCount = elements.size();
     label.setIcon(null);
     label.setToolTipText(null);
@@ -51,24 +58,21 @@ public class WorldMapGrid extends JPanel {
     if (elementCount == 1) {
       IMapElement element = elements.get(0);
       if (element instanceof Plant) {
-        ImageIcon icon = new ImageIcon(getClass().getResource("/images/plant.png"));
-        label.setIcon(icon);
+        label.setIcon(this.plantIcon);
       }
       if (element instanceof Animal) {
         Animal animal = (Animal) element;
-        ImageIcon icon = new ImageIcon(getClass().getResource("/images/animal.png"));
         String tooltipText = String.format(
             "<html>Energy: %d<br>Min. reproduction energy: %d</html>",
             animal.getEnergy(),
             animal.getMinReproductionEnergy()
         );
-        label.setIcon(icon);
+        label.setIcon(this.animalIcon);
         label.setToolTipText(tooltipText);
       }
     } else if (elementCount > 1) {
-      ImageIcon icon = new ImageIcon(getClass().getResource("/images/animal.png"));
       String tooltipText = String.format("%d animals", elementCount);
-      label.setIcon(icon);
+      label.setIcon(this.animalIcon);
       label.setToolTipText(tooltipText);
       label.setText(String.valueOf(elementCount));
     }

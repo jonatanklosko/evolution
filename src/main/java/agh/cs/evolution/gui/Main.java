@@ -1,6 +1,5 @@
 package agh.cs.evolution.gui;
 
-import agh.cs.evolution.Simulation;
 import agh.cs.evolution.SimulationParams;
 
 public class Main {
@@ -8,10 +7,9 @@ public class Main {
     try {
       String parametersPath = args.length > 0 ? args[0] : "parameters.json";
       SimulationParams simulationParams = SimulationParams.fromFile(parametersPath);
-      Simulation simulation = new Simulation(simulationParams);
-      new AppGui(simulation);
+      new AppGui(simulationParams);
     } catch (Exception error) {
-      System.out.println(error);
+      System.out.println("Failed to start the simulation: " + error.getMessage());
     }
   }
 }
