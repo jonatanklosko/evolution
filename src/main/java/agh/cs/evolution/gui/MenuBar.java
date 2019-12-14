@@ -2,6 +2,8 @@ package agh.cs.evolution.gui;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MenuBar extends JToolBar {
@@ -33,6 +35,7 @@ public class MenuBar extends JToolBar {
         .collect(Collectors.groupingBy(genome -> genome, Collectors.counting()))
         .entrySet()
         .stream()
+        .sorted(Comparator.comparing(entry -> -entry.getValue()))
         .map(entry -> String.format(
             "%d %s with genome: %s",
             entry.getValue(),

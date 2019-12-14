@@ -1,6 +1,7 @@
 package agh.cs.evolution.gui;
 
 import agh.cs.evolution.elements.Animal;
+import agh.cs.evolution.elements.Genome;
 import agh.cs.evolution.elements.IMapElement;
 import agh.cs.evolution.elements.Plant;
 import agh.cs.evolution.geometry.Vector2d;
@@ -39,14 +40,15 @@ public class WorldMapGrid extends JPanel {
 
   public void update(boolean isRunning) {
     this.labelByPosition.forEach((position, label) -> {
-      label.setIcon(this.getIcon(position));
+      Genome dominantGenome = this.controller.getSimulation().dominantGenome().orElse(null);
+      label.setIcon(this.getIcon(position, dominantGenome));
       if (!isRunning) {
-        label.setToolTipText(this.getTooltipText(position));
+        label.setToolTipText(this.getTooltipText(position, dominantGenome));
       }
     });
   }
 
-  private ImageIcon getIcon(Vector2d position) {
+  private ImageIcon getIcon(Vector2d position, Genome dominantGenome) {
     IWorldMap map = this.controller.getSimulation().getMap();
     List<IMapElement> elements = map.elementsAt(position);
     int elementCount = elements.size();
@@ -56,15 +58,19 @@ public class WorldMapGrid extends JPanel {
         return ElementIcon.PLANT.imageIcon;
       }
       if (element instanceof Animal) {
+        Animal animal = (Animal) element;
+        if (animal.getGenome().equals(dominantGenome)) {
+          return ElementIcon.DOMINANT_ANIMAL.imageIcon;
+        }
         return ElementIcon.ANIMAL.imageIcon;
       }
     } else if (elementCount > 1) {
-      return ElementIcon.ANIMAL.imageIcon;
+      return ElementIcon.MULTIPLE_ANIMALS.imageIcon;
     }
     return null;
   }
 
-  private String getTooltipText(Vector2d position) {
+  private String getTooltipText(Vector2d position, Genome dominantGenome) {
     IWorldMap map = this.controller.getSimulation().getMap();
     List<IMapElement> elements = map.elementsAt(position);
     int elementCount = elements.size();
@@ -77,7 +83,8 @@ public class WorldMapGrid extends JPanel {
       if (element instanceof Animal) {
         Animal animal = (Animal) element;
         return String.format(
-            "<html>Energy: %d<br>Min. reproduction energy: %d<br>No. children: %d<br>Genome: %s</html>",
+            "<html>%s<br>Energy: %d<br>Min. reproduction energy: %d<br>No. children: %d<br>Genome: %s</html>",
+            animal.getGenome().equals(dominantGenome) ? "Dominant animal" : "Animal",
             animal.getEnergy(),
             animal.getMinReproductionEnergy(),
             animal.getChildrenCount(),

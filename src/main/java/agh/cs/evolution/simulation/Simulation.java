@@ -9,6 +9,7 @@ import agh.cs.evolution.map.MapWithJungle;
 import agh.cs.evolution.utils.RandomUtils;
 import agh.cs.evolution.utils.Utils;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -124,6 +125,19 @@ public class Simulation {
     return this.animals$()
         .filter(animal -> !animal.isDead())
         .map(Animal::getGenome);
+  }
+
+  public Optional<Genome> dominantGenome() {
+     Map<Genome, Long> countByGenome = this.livingGenomes$()
+        .collect(Collectors.groupingBy(genome -> genome, Collectors.counting()));
+     if (countByGenome.isEmpty()) return Optional.empty();
+     Long maxCount = countByGenome.values().stream().max(Long::compareTo).get();
+     List<Genome> dominantGenomes = countByGenome.entrySet().stream()
+         .filter(entry -> entry.getValue().equals(maxCount))
+         .map(Map.Entry::getKey)
+         .collect(Collectors.toList());
+     if (dominantGenomes.size() > 1) return Optional.empty();
+     return Optional.of(dominantGenomes.get(0));
   }
 
   public long getAnimalCount() {
