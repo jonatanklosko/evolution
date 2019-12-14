@@ -10,6 +10,7 @@ public class MenuBar extends JToolBar {
   Controller controller;
   private JLabel animalCountLabel;
   private JLabel daysPassedLabel;
+  private JLabel plantCountLabel;
 
   public MenuBar(Controller controller) {
     this.controller = controller;
@@ -18,8 +19,9 @@ public class MenuBar extends JToolBar {
     JButton nextYearButton = new JButton("Next year");
     JButton resetButton = new JButton("Reset");
     JButton showLivingGenomesButton = new JButton("Show living genomes");
-    this.animalCountLabel = new JLabel("");
     this.daysPassedLabel = new JLabel("");
+    this.animalCountLabel = new JLabel("");
+    this.plantCountLabel = new JLabel("");
     this.add(nextDayButton);
     this.add(nextYearButton);
     this.add(showLivingGenomesButton);
@@ -27,19 +29,22 @@ public class MenuBar extends JToolBar {
     this.add(this.daysPassedLabel);
     this.addSeparator();
     this.add(this.animalCountLabel);
+    this.addSeparator();
+    this.add(this.plantCountLabel);
     this.add(Box.createHorizontalGlue());
     this.add(resetButton);
     nextDayButton.addActionListener(event -> this.controller.nextDay());
     nextYearButton.addActionListener(event -> this.controller.nextYear());
     showLivingGenomesButton.addActionListener(this::showLivingGenomes);
     resetButton.addActionListener(event -> this.controller.reset());
+    this.update();
   }
 
   public void update() {
     Simulation simulation = this.controller.getSimulation();
-    long animalCount = simulation.livingGenomes$().count();
     this.daysPassedLabel.setText("Days passed: " + simulation.getDaysPassed());
-    this.animalCountLabel.setText("Animals: " + animalCount);
+    this.animalCountLabel.setText("Animals: " + simulation.getAnimalCount());
+    this.plantCountLabel.setText("Plants: " + simulation.getPlantCount());
   }
 
   private void showLivingGenomes(ActionEvent event) {

@@ -126,6 +126,14 @@ public class Simulation {
         .map(Animal::getGenome);
   }
 
+  public long getAnimalCount() {
+    return this.livingGenomes$().count();
+  }
+
+  public long getPlantCount() {
+    return Utils.filterType(this.map.elements$(), Plant.class).count();
+  }
+
   private Stream<Animal> animals$() {
     return Utils.filterType(this.map.elements$(), Animal.class);
   }
