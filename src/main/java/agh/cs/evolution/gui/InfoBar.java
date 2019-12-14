@@ -9,6 +9,9 @@ public class InfoBar extends JToolBar {
   private JLabel animalCountLabel;
   private JLabel daysPassedLabel;
   private JLabel plantCountLabel;
+  private JLabel averageEnergyLabel;
+  private JLabel averageLifetimeLabel;
+  private JLabel averageChildrenCountLabel;
 
   public InfoBar(Controller controller) {
     this.controller = controller;
@@ -16,13 +19,21 @@ public class InfoBar extends JToolBar {
     this.daysPassedLabel = new JLabel("");
     this.animalCountLabel = new JLabel("");
     this.plantCountLabel = new JLabel("");
+    this.averageEnergyLabel = new JLabel("");
+    this.averageLifetimeLabel = new JLabel("");
+    this.averageChildrenCountLabel = new JLabel("");
     this.addSeparator();
     this.add(this.daysPassedLabel);
     this.addSeparator();
     this.add(this.animalCountLabel);
     this.addSeparator();
     this.add(this.plantCountLabel);
-    this.add(Box.createHorizontalGlue());
+    this.addSeparator();
+    this.add(this.averageEnergyLabel);
+    this.addSeparator();
+    this.add(this.averageLifetimeLabel);
+    this.addSeparator();
+    this.add(this.averageChildrenCountLabel);
     this.update();
   }
 
@@ -31,5 +42,16 @@ public class InfoBar extends JToolBar {
     this.daysPassedLabel.setText("Days passed: " + simulation.getDaysPassed());
     this.animalCountLabel.setText("Animals: " + simulation.getAnimalCount());
     this.plantCountLabel.setText("Plants: " + simulation.getPlantCount());
+    this.averageEnergyLabel.setText("Avg. energy: " +
+        simulation.getAverageAnimalEnergy()
+            .map(avgEnergy -> String.format("%.2f", avgEnergy))
+            .orElse("None")
+    );
+    this.averageLifetimeLabel.setText("Avg. lifetime: " + "TODO");
+    this.averageChildrenCountLabel.setText("Avg. children: " +
+        simulation.getAverageChildrenCount()
+            .map(avgEnergy -> String.format("%.2f", avgEnergy))
+            .orElse("None")
+    );
   }
 }

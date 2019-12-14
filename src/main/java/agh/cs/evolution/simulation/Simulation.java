@@ -134,6 +134,22 @@ public class Simulation {
     return Utils.filterType(this.map.elements$(), Plant.class).count();
   }
 
+
+  public Optional<Double> getAverageAnimalEnergy() {
+    if (this.animals$().count() == 0) return Optional.empty();
+    return Optional.of(
+        this.animals$()
+            .collect(Collectors.averagingDouble(animal -> animal.getEnergy()))
+    );
+  }
+  public Optional<Double> getAverageChildrenCount() {
+    if (this.animals$().count() == 0) return Optional.empty();
+    return Optional.of(
+        this.animals$()
+            .collect(Collectors.averagingDouble(animal -> animal.getChildrenCount()))
+    );
+  }
+
   private Stream<Animal> animals$() {
     return Utils.filterType(this.map.elements$(), Animal.class);
   }
