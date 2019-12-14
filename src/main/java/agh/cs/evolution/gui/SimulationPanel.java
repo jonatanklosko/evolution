@@ -5,7 +5,7 @@ import agh.cs.evolution.simulation.SimulationParams;
 import javax.swing.*;
 import java.awt.*;
 
-public class SimulationPanel extends JPanel implements IChangeListener {
+public class SimulationPanel extends JPanel {
   private Controller controller;
   private WorldMapGrid worldMapGrid;
   private MenuBar menuBar;
@@ -15,7 +15,6 @@ public class SimulationPanel extends JPanel implements IChangeListener {
     super(new BorderLayout());
 
     this.controller = new Controller(simulationParams);
-    this.controller.addChangeListener(this);
 
     this.menuBar = new MenuBar(this.controller);
     this.infoBar = new InfoBar(this.controller);
@@ -27,10 +26,5 @@ public class SimulationPanel extends JPanel implements IChangeListener {
 
     this.worldMapGrid = new WorldMapGrid(this.controller);
     this.add(this.worldMapGrid);
-  }
-
-  public void onChange() {
-    this.infoBar.update();
-    this.worldMapGrid.update(this.controller.isRunning());
   }
 }

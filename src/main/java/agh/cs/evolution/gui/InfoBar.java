@@ -4,7 +4,7 @@ import agh.cs.evolution.simulation.Simulation;
 
 import javax.swing.*;
 
-public class InfoBar extends JToolBar {
+public class InfoBar extends JToolBar implements IChangeListener {
   Controller controller;
   private JLabel animalCountLabel;
   private JLabel dayNumberLabel;
@@ -15,6 +15,7 @@ public class InfoBar extends JToolBar {
 
   public InfoBar(Controller controller) {
     this.controller = controller;
+    this.controller.addChangeListener(this);
     this.setFloatable(false);
     this.dayNumberLabel = new JLabel("");
     this.animalCountLabel = new JLabel("");
@@ -34,10 +35,10 @@ public class InfoBar extends JToolBar {
     this.add(this.averageLifetimeLabel);
     this.addSeparator();
     this.add(this.averageChildrenCountLabel);
-    this.update();
+    this.onChange();
   }
 
-  public void update() {
+  public void onChange() {
     Simulation simulation = this.controller.getSimulation();
     this.dayNumberLabel.setText("Day: " + simulation.getDayNumber());
     this.animalCountLabel.setText("Animals: " + simulation.getAnimalCount());

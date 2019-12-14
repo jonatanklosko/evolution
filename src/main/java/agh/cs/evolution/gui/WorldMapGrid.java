@@ -13,12 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WorldMapGrid extends JPanel {
+public class WorldMapGrid extends JPanel implements IChangeListener {
   private Controller controller;
   private Map<Vector2d, JLabel> labelByPosition;
 
   public WorldMapGrid(Controller controller) {
     this.controller = controller;
+    this.controller.addChangeListener(this);
     this.labelByPosition = new HashMap<>();
     IWorldMap map = this.controller.getSimulation().getMap();
     Vector2d lowerLeft = map.getLowerLeft();
@@ -35,14 +36,14 @@ public class WorldMapGrid extends JPanel {
         this.labelByPosition.put(position, label);
       }
     }
-    this.update(false);
+    this.onChange();
   }
 
-  public void update(boolean isRunning) {
+  public void onChange() {
     this.labelByPosition.forEach((position, label) -> {
       Genome dominantGenome = this.controller.getSimulation().dominantGenome().orElse(null);
       label.setIcon(this.getIcon(position, dominantGenome));
-      if (!isRunning) {
+      if (!this.controller.isRunning()) {
         label.setToolTipText(this.getTooltipText(position, dominantGenome));
       }
     });
