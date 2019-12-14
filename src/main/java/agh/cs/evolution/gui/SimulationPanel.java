@@ -5,19 +5,15 @@ import agh.cs.evolution.simulation.SimulationParams;
 import javax.swing.*;
 import java.awt.*;
 
-public class AppGui extends JFrame implements IChangeListener {
+public class SimulationPanel extends JPanel implements IChangeListener {
   private Controller controller;
   private WorldMapGrid worldMapGrid;
   private MenuBar menuBar;
   private InfoBar infoBar;
 
-  public AppGui(SimulationParams simulationParams) {
-    super("Evolution");
+  public SimulationPanel(SimulationParams simulationParams) {
     this.controller = new Controller(simulationParams);
     this.controller.addChangeListener(this);
-
-    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     this.menuBar = new MenuBar(this.controller);
     this.infoBar = new InfoBar(this.controller);
@@ -25,12 +21,10 @@ public class AppGui extends JFrame implements IChangeListener {
     JPanel toolbars = new JPanel(new GridLayout(2, 1));
     toolbars.add(this.menuBar);
     toolbars.add(this.infoBar);
-    this.add(toolbars, BorderLayout.PAGE_START);
+    this.add(toolbars, BorderLayout.NORTH);
 
     this.worldMapGrid = new WorldMapGrid(this.controller);
     this.add(this.worldMapGrid);
-
-    this.setVisible(true);
   }
 
   public void onChange() {
