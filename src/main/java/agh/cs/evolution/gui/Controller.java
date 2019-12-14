@@ -46,6 +46,11 @@ public class Controller {
     } else {
       this.timer.start();
     }
+    this.updateView();
+  }
+
+  public boolean isRunning() {
+    return this.timer.isRunning();
   }
 
   public void addChangeListener(IChangeListener listener) {

@@ -29,6 +29,6 @@ public class SimulationPanel extends JPanel implements IChangeListener {
 
   public void onChange() {
     this.infoBar.update();
-    this.worldMapGrid.update();
+    this.worldMapGrid.update(this.controller.isRunning());
   }
 }
