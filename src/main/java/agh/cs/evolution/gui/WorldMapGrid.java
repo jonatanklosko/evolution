@@ -66,9 +66,10 @@ public class WorldMapGrid extends JPanel {
       if (element instanceof Animal) {
         Animal animal = (Animal) element;
         String tooltipText = String.format(
-            "<html>Energy: %d<br>Min. reproduction energy: %d</html>",
+            "<html>Energy: %d<br>Min. reproduction energy: %d<br>No. children: %d</html>",
             animal.getEnergy(),
-            animal.getMinReproductionEnergy()
+            animal.getMinReproductionEnergy(),
+            animal.getChildrenCount()
         );
         label.setIcon(this.animalIcon);
         label.setToolTipText(tooltipText);

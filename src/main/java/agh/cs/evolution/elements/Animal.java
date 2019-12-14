@@ -13,6 +13,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
   private final int minReproductionEnergy;
   private Direction direction;
   private List<IPositionChangeObserver> positionChangeObservers;
+  private int childrenCount;
 
   public Animal(Vector2d position, int energy, int minReproductionEnergy) {
     this(position, energy, minReproductionEnergy, Genome.randomGenome());
@@ -25,6 +26,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     this.minReproductionEnergy = minReproductionEnergy;
     this.direction = Direction.randomDirection();
     this.positionChangeObservers = new LinkedList<>();
+    this.childrenCount = 0;
   }
 
   public int getEnergy() {
@@ -37,6 +39,10 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
 
   public int getMinReproductionEnergy() {
     return this.minReproductionEnergy;
+  }
+
+  public int getChildrenCount() {
+    return this.childrenCount;
   }
 
   public boolean isDead() {
@@ -71,6 +77,8 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     Vector2d childPosition = RandomUtils.randomElement(possibleChildPositions);
     this.addEnergy(-this.energy / 4);
     other.addEnergy(-other.energy / 4);
+    this.childrenCount++;
+    other.childrenCount++;
     return new Animal(childPosition, childEnergy, this.minReproductionEnergy, childGenome);
   }
 
