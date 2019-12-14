@@ -84,12 +84,13 @@ public class WorldMapGrid extends JPanel implements IChangeListener {
       if (element instanceof Animal) {
         Animal animal = (Animal) element;
         return String.format(
-            "<html>%s<br>Energy: %d<br>Min. reproduction energy: %d<br>Age: %d<br>No. children: %d<br>Genome: %s</html>",
+            "<html>%s<br>Energy: %d<br>Min. reproduction energy: %d<br>Age: %d<br>No. children: %d<br>No. descendants: %d<br>Genome: %s</html>",
             animal.getGenome().equals(dominantGenome) ? "Dominant animal" : "Animal",
             animal.getEnergy(),
             animal.getMinReproductionEnergy(),
             this.controller.getSimulation().getDayNumber() - animal.getBirthDay(),
             animal.getChildrenCount(),
+            animal.getDescendantCount(),
             animal.getGenome().toGenesString()
         );
       }

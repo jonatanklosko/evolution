@@ -6,6 +6,7 @@ import agh.cs.evolution.utils.RandomUtils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Animal extends AbstractMapElement implements IPositionChangeSubject {
   private final Genome genome;
@@ -13,7 +14,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
   private final int minReproductionEnergy;
   private Direction direction;
   private List<IPositionChangeObserver> positionChangeObservers;
-  private int childrenCount;
+  private List<Animal> children;
   private final int birthDay;
 
   public Animal(Vector2d position, int energy, int minReproductionEnergy, int birthDay) {
@@ -27,7 +28,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     this.minReproductionEnergy = minReproductionEnergy;
     this.direction = Direction.randomDirection();
     this.positionChangeObservers = new LinkedList<>();
-    this.childrenCount = 0;
+    this.children = new LinkedList<>();
     this.birthDay = birthDay;
   }
 
@@ -43,12 +44,23 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     return this.minReproductionEnergy;
   }
 
-  public int getChildrenCount() {
-    return this.childrenCount;
-  }
-
   public int getBirthDay() {
     return this.birthDay;
+  }
+
+  public long getChildrenCount() {
+    return this.children.size();
+  }
+
+  public long getDescendantCount() {
+    return this.descendants$().count();
+  }
+
+  private Stream<Animal> descendants$() {
+    return Stream.concat(
+        this.children.stream(),
+        this.children.stream().flatMap(Animal::descendants$)
+    ).distinct();
   }
 
   public boolean isDead() {
@@ -81,11 +93,12 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     Genome childGenome = this.genome.combine(other.genome);
     int childEnergy = this.energy / 4 + other.energy / 4;
     Vector2d childPosition = RandomUtils.randomElement(possibleChildPositions);
+    Animal child = new Animal(childPosition, childEnergy, this.minReproductionEnergy, childGenome, birthDay);
     this.addEnergy(-this.energy / 4);
     other.addEnergy(-other.energy / 4);
-    this.childrenCount++;
-    other.childrenCount++;
-    return new Animal(childPosition, childEnergy, this.minReproductionEnergy, childGenome, birthDay);
+    this.children.add(child);
+    other.children.add(child);
+    return child;
   }
 
   public void addPositionChangeObserver(IPositionChangeObserver observer) {

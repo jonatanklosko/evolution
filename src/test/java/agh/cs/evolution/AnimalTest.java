@@ -66,4 +66,13 @@ public class AnimalTest {
     Animal animal = new Animal(new Vector2d(0, 0), 9, 10, 0);
     assertFalse(animal.ableToReproduce());
   }
+
+  @Test
+  public void getDescendantCountCountsEveryDescendantOnce() {
+    Animal animal1 = new Animal(new Vector2d(0, 0), 20, 1, 0);
+    Animal animal2 = new Animal(new Vector2d(0, 0), 20, 1, 0);
+    Animal child1 = animal1.childWith(animal2, List.of(new Vector2d(1, 1)), 1);
+    Animal child2 = animal1.childWith(child1, List.of(new Vector2d(0, 1)), 2);
+    assertEquals(2, animal1.getDescendantCount());
+  }
 }
