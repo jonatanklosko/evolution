@@ -7,7 +7,7 @@ import javax.swing.*;
 public class InfoBar extends JToolBar {
   Controller controller;
   private JLabel animalCountLabel;
-  private JLabel daysPassedLabel;
+  private JLabel dayNumberLabel;
   private JLabel plantCountLabel;
   private JLabel averageEnergyLabel;
   private JLabel averageLifetimeLabel;
@@ -16,14 +16,14 @@ public class InfoBar extends JToolBar {
   public InfoBar(Controller controller) {
     this.controller = controller;
     this.setFloatable(false);
-    this.daysPassedLabel = new JLabel("");
+    this.dayNumberLabel = new JLabel("");
     this.animalCountLabel = new JLabel("");
     this.plantCountLabel = new JLabel("");
     this.averageEnergyLabel = new JLabel("");
     this.averageLifetimeLabel = new JLabel("");
     this.averageChildrenCountLabel = new JLabel("");
     this.addSeparator();
-    this.add(this.daysPassedLabel);
+    this.add(this.dayNumberLabel);
     this.addSeparator();
     this.add(this.animalCountLabel);
     this.addSeparator();
@@ -39,7 +39,7 @@ public class InfoBar extends JToolBar {
 
   public void update() {
     Simulation simulation = this.controller.getSimulation();
-    this.daysPassedLabel.setText("Days passed: " + simulation.getDaysPassed());
+    this.dayNumberLabel.setText("Day: " + simulation.getDayNumber());
     this.animalCountLabel.setText("Animals: " + simulation.getAnimalCount());
     this.plantCountLabel.setText("Plants: " + simulation.getPlantCount());
     this.averageEnergyLabel.setText("Avg. energy: " +
@@ -47,10 +47,14 @@ public class InfoBar extends JToolBar {
             .map(avgEnergy -> String.format("%.2f", avgEnergy))
             .orElse("None")
     );
-    this.averageLifetimeLabel.setText("Avg. lifetime: " + "TODO");
+    this.averageLifetimeLabel.setText("Avg. age: " +
+        simulation.getAverageAge()
+            .map(avgAge -> String.format("%.2f days", avgAge))
+            .orElse("None")
+    );
     this.averageChildrenCountLabel.setText("Avg. children: " +
         simulation.getAverageChildrenCount()
-            .map(avgEnergy -> String.format("%.2f", avgEnergy))
+            .map(avgChildren -> String.format("%.2f", avgChildren))
             .orElse("None")
     );
   }

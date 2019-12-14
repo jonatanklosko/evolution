@@ -16,18 +16,18 @@ import java.util.stream.Stream;
 public class Simulation {
   public final SimulationParams params;
   private final MapWithJungle map;
-  private int daysPassed;
+  private int dayNumber;
 
   public Simulation(SimulationParams params) {
     this.params = params;
     this.map = new MapWithJungle(params.width, params.height, params.jungleRatio);
-    this.daysPassed = 0;
+    this.dayNumber = 1;
     this.initialize(params.initialNumberOfAnimals);
   }
 
   private void initialize(int numberOfAnimals) {
     this.map.randomPositions$().distinct().limit(numberOfAnimals).forEach(position -> {
-      Animal animal = new Animal(position, this.params.startEnergy, this.params.startEnergy / 2);
+      Animal animal = new Animal(position, this.params.startEnergy, this.params.startEnergy / 2, 0);
       this.map.addElement(animal);
     });
   }
@@ -38,7 +38,7 @@ public class Simulation {
      this.eat();
      this.reproduce();
      this.generatePlants();
-     this.daysPassed++;
+     this.dayNumber++;
   }
 
   public void nextYear() {
@@ -98,7 +98,7 @@ public class Simulation {
               .collect(Collectors.toList());
           List<Vector2d> possibleChildPositions = this.map.freeAdjacentPositions$(position).collect(Collectors.toList());
           if (animalPair.size() != 2 || possibleChildPositions.isEmpty()) return;
-          Animal child = animalPair.get(0).childWith(animalPair.get(1), possibleChildPositions);
+          Animal child = animalPair.get(0).childWith(animalPair.get(1), possibleChildPositions, this.dayNumber);
           this.map.addElement(child);
         });
   }
@@ -142,11 +142,20 @@ public class Simulation {
             .collect(Collectors.averagingDouble(animal -> animal.getEnergy()))
     );
   }
+
   public Optional<Double> getAverageChildrenCount() {
     if (this.animals$().count() == 0) return Optional.empty();
     return Optional.of(
         this.animals$()
             .collect(Collectors.averagingDouble(animal -> animal.getChildrenCount()))
+    );
+  }
+
+  public Optional<Double> getAverageAge() {
+    if (this.animals$().count() == 0) return Optional.empty();
+    return Optional.of(
+        this.animals$()
+            .collect(Collectors.averagingDouble(animal -> this.dayNumber - animal.getBirthDay()))
     );
   }
 
@@ -158,7 +167,7 @@ public class Simulation {
     return this.map;
   }
 
-  public int getDaysPassed() {
-    return this.daysPassed;
+  public int getDayNumber() {
+    return this.dayNumber;
   }
 }

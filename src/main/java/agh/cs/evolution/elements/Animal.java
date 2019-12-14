@@ -14,12 +14,13 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
   private Direction direction;
   private List<IPositionChangeObserver> positionChangeObservers;
   private int childrenCount;
+  private final int birthDay;
 
-  public Animal(Vector2d position, int energy, int minReproductionEnergy) {
-    this(position, energy, minReproductionEnergy, Genome.randomGenome());
+  public Animal(Vector2d position, int energy, int minReproductionEnergy, int birthDay) {
+    this(position, energy, minReproductionEnergy, Genome.randomGenome(), birthDay);
   }
 
-  public Animal(Vector2d position, int energy, int minReproductionEnergy, Genome genome) {
+  public Animal(Vector2d position, int energy, int minReproductionEnergy, Genome genome, int birthDay) {
     super(position);
     this.energy = energy;
     this.genome = genome;
@@ -27,6 +28,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     this.direction = Direction.randomDirection();
     this.positionChangeObservers = new LinkedList<>();
     this.childrenCount = 0;
+    this.birthDay = birthDay;
   }
 
   public int getEnergy() {
@@ -37,12 +39,12 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     return this.genome;
   }
 
-  public int getMinReproductionEnergy() {
-    return this.minReproductionEnergy;
-  }
-
   public int getChildrenCount() {
     return this.childrenCount;
+  }
+
+  public int getBirthDay() {
+    return this.birthDay;
   }
 
   public boolean isDead() {
@@ -71,7 +73,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     return this.energy >= this.minReproductionEnergy;
   }
 
-  public Animal childWith(Animal other, List<Vector2d> possibleChildPositions) {
+  public Animal childWith(Animal other, List<Vector2d> possibleChildPositions, int birthDay) {
     Genome childGenome = this.genome.combine(other.genome);
     int childEnergy = this.energy / 4 + other.energy / 4;
     Vector2d childPosition = RandomUtils.randomElement(possibleChildPositions);
@@ -79,7 +81,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     other.addEnergy(-other.energy / 4);
     this.childrenCount++;
     other.childrenCount++;
-    return new Animal(childPosition, childEnergy, this.minReproductionEnergy, childGenome);
+    return new Animal(childPosition, childEnergy, this.minReproductionEnergy, childGenome, birthDay);
   }
 
   public void addPositionChangeObserver(IPositionChangeObserver observer) {
