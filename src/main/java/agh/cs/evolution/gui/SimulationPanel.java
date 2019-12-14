@@ -12,6 +12,8 @@ public class SimulationPanel extends JPanel implements IChangeListener {
   private InfoBar infoBar;
 
   public SimulationPanel(SimulationParams simulationParams) {
+    super(new BorderLayout());
+
     this.controller = new Controller(simulationParams);
     this.controller.addChangeListener(this);
 
@@ -21,7 +23,7 @@ public class SimulationPanel extends JPanel implements IChangeListener {
     JPanel toolbars = new JPanel(new GridLayout(2, 1));
     toolbars.add(this.menuBar);
     toolbars.add(this.infoBar);
-    this.add(toolbars, BorderLayout.NORTH);
+    this.add(toolbars, BorderLayout.PAGE_START);
 
     this.worldMapGrid = new WorldMapGrid(this.controller);
     this.add(this.worldMapGrid);
