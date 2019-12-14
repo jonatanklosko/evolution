@@ -39,57 +39,54 @@ public class WorldMapGrid extends JPanel {
 
   public void update(boolean isRunning) {
     this.labelByPosition.forEach((position, label) -> {
-      this.updateLabel(label, position);
+      label.setIcon(this.getIcon(position));
       if (!isRunning) {
-        this.updateTooltip(label, position);
+        label.setToolTipText(this.getTooltipText(position));
       }
     });
   }
 
-  private void updateLabel(JLabel label, Vector2d position) {
+  private ImageIcon getIcon(Vector2d position) {
     IWorldMap map = this.controller.getSimulation().getMap();
     List<IMapElement> elements = map.elementsAt(position);
     int elementCount = elements.size();
-    label.setIcon(null);
     if (elementCount == 1) {
       IMapElement element = elements.get(0);
       if (element instanceof Plant) {
-        label.setIcon(ElementIcon.PLANT.imageIcon);
+        return ElementIcon.PLANT.imageIcon;
       }
       if (element instanceof Animal) {
-        label.setIcon(ElementIcon.ANIMAL.imageIcon);
+        return ElementIcon.ANIMAL.imageIcon;
       }
     } else if (elementCount > 1) {
-      label.setIcon(ElementIcon.ANIMAL.imageIcon);
+      return ElementIcon.ANIMAL.imageIcon;
     }
+    return null;
   }
 
-  private void updateTooltip(JLabel label, Vector2d position) {
+  private String getTooltipText(Vector2d position) {
     IWorldMap map = this.controller.getSimulation().getMap();
     List<IMapElement> elements = map.elementsAt(position);
     int elementCount = elements.size();
-    label.setToolTipText(null);
     if (elementCount == 1) {
       IMapElement element = elements.get(0);
       if (element instanceof Plant) {
         Plant plant = (Plant) element;
-        String tooltipText = String.format("Plant with %d energy", plant.getEnergy());
-        label.setToolTipText(tooltipText);
+        return String.format("Plant with %d energy", plant.getEnergy());
       }
       if (element instanceof Animal) {
         Animal animal = (Animal) element;
-        String tooltipText = String.format(
+        return String.format(
             "<html>Energy: %d<br>Min. reproduction energy: %d<br>No. children: %d<br>Genome: %s</html>",
             animal.getEnergy(),
             animal.getMinReproductionEnergy(),
             animal.getChildrenCount(),
             animal.getGenome().toGenesString()
         );
-        label.setToolTipText(tooltipText);
       }
     } else if (elementCount > 1) {
-      String tooltipText = String.format("%d animals", elementCount);
-      label.setToolTipText(tooltipText);
+      return String.format("%d animals", elementCount);
     }
+    return null;
   }
 }
