@@ -34,7 +34,7 @@ public class MenuBar extends JToolBar {
             "%d %s with genome: %s",
             entry.getValue(),
             entry.getValue() == 1 ? "animal" : "animals",
-            entry.getKey()
+            entry.getKey().toGenesString()
         ))
         .collect(Collectors.joining("\n"));
     JTextArea textArea = new JTextArea(30, 60);

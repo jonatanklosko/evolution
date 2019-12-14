@@ -60,12 +60,15 @@ public class Genome {
     Collections.sort(genes);
   }
 
-  @Override
-  public String toString() {
-    String genesString = this.genes.stream()
+  public String toGenesString() {
+    return this.genes.stream()
         .map(String::valueOf)
         .collect(Collectors.joining(" "));
-    return String.format("Genome{%s}", genesString);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("Genome{%s}", this.toGenesString());
   }
 
   @Override
