@@ -3,6 +3,7 @@ package agh.cs.evolution.gui;
 import agh.cs.evolution.simulation.Simulation;
 import agh.cs.evolution.simulation.SimulationParams;
 
+import javax.swing.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,11 +11,14 @@ public class Controller {
   private SimulationParams simulationParams;
   private Simulation simulation;
   private List<IChangeListener> changeListeners;
+  private Timer timer;
+  private final int INTERVAL_MS = 50;
 
   public Controller(SimulationParams simulationParams) {
     this.simulationParams = simulationParams;
     this.simulation = new Simulation(this.simulationParams);
     this.changeListeners = new LinkedList<>();
+    this.timer = new Timer(INTERVAL_MS, event -> this.nextDay());
   }
 
   public Simulation getSimulation() {
@@ -34,6 +38,14 @@ public class Controller {
   public void reset() {
     this.simulation = new Simulation(this.simulationParams);
     this.updateView();
+  }
+
+  public void toggleRun() {
+    if (this.timer.isRunning()) {
+      this.timer.stop();
+    } else {
+      this.timer.start();
+    }
   }
 
   public void addChangeListener(IChangeListener listener) {

@@ -10,15 +10,18 @@ public class MenuBar extends JToolBar {
   public MenuBar(Controller controller) {
     this.controller = controller;
     this.setFloatable(false);
+    JButton runButton = new JButton("Run");
     JButton nextDayButton = new JButton("Next day");
     JButton nextYearButton = new JButton("Next year");
     JButton resetButton = new JButton("Reset");
     JButton showLivingGenomesButton = new JButton("Show living genomes");
+    this.add(runButton);
     this.add(nextDayButton);
     this.add(nextYearButton);
     this.add(showLivingGenomesButton);
     this.add(Box.createHorizontalGlue());
     this.add(resetButton);
+    runButton.addActionListener(event -> this.controller.toggleRun());
     nextDayButton.addActionListener(event -> this.controller.nextDay());
     nextYearButton.addActionListener(event -> this.controller.nextYear());
     showLivingGenomesButton.addActionListener(this::showLivingGenomes);
