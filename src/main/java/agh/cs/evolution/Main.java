@@ -8,8 +8,7 @@ import javax.swing.*;
 public class Main {
   public static void main(String[] args) {
     try {
-//      String parametersPath = args.length > 0 ? args[0] : "parameters.json";
-      String parametersPath = args.length > 0 ? args[0] : "src/main/resources/example-parameters.json";
+      String parametersPath = args.length > 0 ? args[0] : "parameters.json";
       SimulationParams simulationParams = SimulationParams.fromFile(parametersPath);
       SwingUtilities.invokeLater(() -> {
         new App(simulationParams);
