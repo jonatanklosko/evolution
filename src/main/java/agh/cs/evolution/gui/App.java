@@ -14,8 +14,10 @@ public class App extends JFrame {
         new ImageIcon(getClass().getClassLoader().getResource("images/favicon.png")).getImage()
     );
 
-    SimulationPanel simulationPanel = new SimulationPanel(simulationParams);
-    this.add(simulationPanel);
+    JTabbedPane tabbedPane = new JTabbedPane();
+    tabbedPane.addTab("Simulation 1", new SimulationPanel(simulationParams));
+    tabbedPane.addTab("Simulation 2", new SimulationPanel(simulationParams));
+    this.add(tabbedPane);
 
     this.setVisible(true);
   }
