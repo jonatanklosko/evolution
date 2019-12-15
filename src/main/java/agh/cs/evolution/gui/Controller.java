@@ -1,9 +1,16 @@
 package agh.cs.evolution.gui;
 
 import agh.cs.evolution.simulation.Simulation;
+import agh.cs.evolution.simulation.SimulationDaySummary;
 import agh.cs.evolution.simulation.SimulationParams;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +20,7 @@ public class Controller {
   private List<IChangeListener> changeListeners;
   private Timer timer;
   private final int INTERVAL_MS = 50;
+  private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
   public Controller(SimulationParams simulationParams) {
     this.simulationParams = simulationParams;
@@ -47,6 +55,13 @@ public class Controller {
       this.timer.start();
     }
     this.updateView();
+  }
+
+  public void export(File file) throws IOException {
+    List<SimulationDaySummary> simulationDaySummaries = this.simulation.getDaySummaries();
+    try (Writer writer = new FileWriter(file)) {
+      Controller.gson.toJson(simulationDaySummaries, writer);
+    }
   }
 
   public boolean isRunning() {

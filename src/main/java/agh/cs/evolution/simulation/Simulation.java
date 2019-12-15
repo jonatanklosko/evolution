@@ -35,19 +35,19 @@ public class Simulation {
   }
 
   public void nextDay() {
+    this.daySummaries.add(new SimulationDaySummary(
+        this.dayNumber,
+        this.getAnimalCount(),
+        this.getPlantCount(),
+        this.getAverageAnimalEnergy().orElse(0.0),
+        this.getAverageAge().orElse(0.0),
+        this.getAverageChildrenCount().orElse(0.0)
+    ));
      this.removeDeadAnimals();
      this.moveAnimals();
      this.eat();
      this.reproduce();
      this.generatePlants();
-     this.daySummaries.add(new SimulationDaySummary(
-         this.dayNumber,
-         this.getAnimalCount(),
-         this.getPlantCount(),
-         this.getAverageAnimalEnergy().orElse(0.0),
-         this.getAverageAge().orElse(0.0),
-         this.getAverageChildrenCount().orElse(0.0)
-     ));
      this.dayNumber++;
   }
 
@@ -162,7 +162,7 @@ public class Simulation {
     if (this.animals$().count() == 0) return Optional.empty();
     return Optional.of(
         this.animals$()
-            .collect(Collectors.averagingDouble(animal -> animal.getEnergy()))
+            .collect(Collectors.averagingDouble(Animal::getEnergy))
     );
   }
 
@@ -170,7 +170,7 @@ public class Simulation {
     if (this.animals$().count() == 0) return Optional.empty();
     return Optional.of(
         this.animals$()
-            .collect(Collectors.averagingDouble(animal -> animal.getChildrenCount()))
+            .collect(Collectors.averagingDouble(Animal::getChildrenCount))
     );
   }
 
@@ -192,5 +192,9 @@ public class Simulation {
 
   public int getDayNumber() {
     return this.dayNumber;
+  }
+
+  public List<SimulationDaySummary> getDaySummaries() {
+    return this.daySummaries;
   }
 }
