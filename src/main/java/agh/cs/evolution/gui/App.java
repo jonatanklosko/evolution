@@ -10,6 +10,10 @@ public class App extends JFrame {
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+    this.setIconImage(
+        new ImageIcon(getClass().getClassLoader().getResource("images/favicon.png")).getImage()
+    );
+
     SimulationPanel simulationPanel = new SimulationPanel(simulationParams);
     this.add(simulationPanel);
 
