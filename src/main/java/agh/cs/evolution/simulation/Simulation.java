@@ -9,7 +9,6 @@ import agh.cs.evolution.map.MapWithJungle;
 import agh.cs.evolution.utils.RandomUtils;
 import agh.cs.evolution.utils.Utils;
 
-import javax.swing.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,11 +17,13 @@ public class Simulation {
   public final SimulationParams params;
   private final MapWithJungle map;
   private int dayNumber;
+  private List<SimulationDaySummary> daySummaries;
 
   public Simulation(SimulationParams params) {
     this.params = params;
     this.map = new MapWithJungle(params.width, params.height, params.jungleRatio);
     this.dayNumber = 1;
+    this.daySummaries = new LinkedList<>();
     this.initialize(params.initialNumberOfAnimals);
   }
 
@@ -39,6 +40,14 @@ public class Simulation {
      this.eat();
      this.reproduce();
      this.generatePlants();
+     this.daySummaries.add(new SimulationDaySummary(
+         this.dayNumber,
+         this.getAnimalCount(),
+         this.getPlantCount(),
+         this.getAverageAnimalEnergy().orElse(0.0),
+         this.getAverageAge().orElse(0.0),
+         this.getAverageChildrenCount().orElse(0.0)
+     ));
      this.dayNumber++;
   }
 

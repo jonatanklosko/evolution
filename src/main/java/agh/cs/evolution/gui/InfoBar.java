@@ -10,7 +10,7 @@ public class InfoBar extends JToolBar implements IChangeListener {
   private JLabel dayNumberLabel;
   private JLabel plantCountLabel;
   private JLabel averageEnergyLabel;
-  private JLabel averageLifetimeLabel;
+  private JLabel averageAgeLabel;
   private JLabel averageChildrenCountLabel;
 
   public InfoBar(Controller controller) {
@@ -21,7 +21,7 @@ public class InfoBar extends JToolBar implements IChangeListener {
     this.animalCountLabel = new JLabel("");
     this.plantCountLabel = new JLabel("");
     this.averageEnergyLabel = new JLabel("");
-    this.averageLifetimeLabel = new JLabel("");
+    this.averageAgeLabel = new JLabel("");
     this.averageChildrenCountLabel = new JLabel("");
     this.addSeparator();
     this.add(this.dayNumberLabel);
@@ -32,7 +32,7 @@ public class InfoBar extends JToolBar implements IChangeListener {
     this.addSeparator();
     this.add(this.averageEnergyLabel);
     this.addSeparator();
-    this.add(this.averageLifetimeLabel);
+    this.add(this.averageAgeLabel);
     this.addSeparator();
     this.add(this.averageChildrenCountLabel);
     this.onChange();
@@ -48,7 +48,7 @@ public class InfoBar extends JToolBar implements IChangeListener {
             .map(avgEnergy -> String.format("%.2f", avgEnergy))
             .orElse("None")
     );
-    this.averageLifetimeLabel.setText("Avg. age: " +
+    this.averageAgeLabel.setText("Avg. age: " +
         simulation.getAverageAge()
             .map(avgAge -> String.format("%.2f days", avgAge))
             .orElse("None")
