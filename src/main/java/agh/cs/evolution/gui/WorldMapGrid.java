@@ -40,8 +40,8 @@ public class WorldMapGrid extends JPanel implements IChangeListener {
   }
 
   public void onChange() {
+    Genome dominantGenome = this.controller.getSimulation().dominantGenome().orElse(null);
     this.labelByPosition.forEach((position, label) -> {
-      Genome dominantGenome = this.controller.getSimulation().dominantGenome().orElse(null);
       label.setIcon(this.getIcon(position, dominantGenome));
       if (!this.controller.isRunning()) {
         label.setToolTipText(this.getTooltipText(position, dominantGenome));
