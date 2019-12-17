@@ -3,6 +3,7 @@ package agh.cs.evolution.simulation;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -27,8 +28,8 @@ public class SimulationParams {
     this.initialNumberOfAnimals = initialNumberOfAnimals;
   }
 
-  public static SimulationParams fromFile(String path) throws IOException {
-    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+  public static SimulationParams fromFile(File file) throws IOException {
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
       return SimulationParams.gson.fromJson(bufferedReader, SimulationParams.class);
     } catch (IOException error) {
       throw error;
