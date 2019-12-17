@@ -7,24 +7,24 @@ import java.awt.*;
 
 public class SimulationPanel extends JPanel {
   private Controller controller;
-  private WorldMapGrid worldMapGrid;
-  private MenuBar menuBar;
-  private InfoBar infoBar;
 
   public SimulationPanel(SimulationParams simulationParams) {
     super(new BorderLayout());
 
     this.controller = new Controller(simulationParams);
 
-    this.menuBar = new MenuBar(this.controller);
-    this.infoBar = new InfoBar(this.controller);
+    MenuBar menuBar = new MenuBar(this.controller);
+    InfoBar infoBar = new InfoBar(this.controller);
+    AnimalBar animalBar = new AnimalBar(this.controller);
 
     JPanel toolbars = new JPanel(new GridLayout(2, 1));
-    toolbars.add(this.menuBar);
-    toolbars.add(this.infoBar);
+    toolbars.add(menuBar);
+    toolbars.add(infoBar);
     this.add(toolbars, BorderLayout.PAGE_START);
 
-    this.worldMapGrid = new WorldMapGrid(this.controller);
-    this.add(this.worldMapGrid);
+    WorldMapGrid worldMapGrid = new WorldMapGrid(this.controller);
+    this.add(worldMapGrid);
+
+    this.add(animalBar, BorderLayout.PAGE_END);
   }
 }

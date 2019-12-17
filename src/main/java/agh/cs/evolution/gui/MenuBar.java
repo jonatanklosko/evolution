@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class MenuBar extends JToolBar {
-  Controller controller;
+  private Controller controller;
 
   public MenuBar(Controller controller) {
     this.controller = controller;

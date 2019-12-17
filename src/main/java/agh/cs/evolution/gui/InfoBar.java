@@ -5,7 +5,7 @@ import agh.cs.evolution.simulation.Simulation;
 import javax.swing.*;
 
 public class InfoBar extends JToolBar implements IChangeListener {
-  Controller controller;
+  private Controller controller;
   private JLabel animalCountLabel;
   private JLabel dayNumberLabel;
   private JLabel plantCountLabel;

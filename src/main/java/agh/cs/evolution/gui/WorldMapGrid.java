@@ -9,6 +9,8 @@ import agh.cs.evolution.map.IWorldMap;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,12 @@ public class WorldMapGrid extends JPanel implements IChangeListener {
         tile.setBorder(BorderFactory.createDashedBorder(new Color(220, 220, 220)));
         this.add(tile);
         this.tileByPosition.put(position, tile);
+        tile.addMouseListener(new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+            controller.onPositionSelected(position);
+          }
+        });
       }
     }
     this.onChange();
@@ -60,6 +68,9 @@ public class WorldMapGrid extends JPanel implements IChangeListener {
       }
       if (element instanceof Animal) {
         Animal animal = (Animal) element;
+        if (animal.equals(this.controller.getSelectedAnimal())) {
+          return ElementImage.SELECTED_ANIMAL.image;
+        }
         if (animal.getGenome().equals(dominantGenome)) {
           return ElementImage.DOMINANT_ANIMAL.image;
         }

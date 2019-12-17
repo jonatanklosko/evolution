@@ -1,8 +1,12 @@
 package agh.cs.evolution.gui;
 
+import agh.cs.evolution.elements.Animal;
+import agh.cs.evolution.elements.IMapElement;
+import agh.cs.evolution.geometry.Vector2d;
 import agh.cs.evolution.simulation.Simulation;
 import agh.cs.evolution.simulation.SimulationExport;
 import agh.cs.evolution.simulation.SimulationParams;
+import agh.cs.evolution.utils.Utils;
 
 import javax.swing.*;
 import java.io.File;
@@ -11,11 +15,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Controller {
+  private final int INTERVAL_MS = 50;
   private SimulationParams simulationParams;
   private Simulation simulation;
   private List<IChangeListener> changeListeners;
   private Timer timer;
-  private final int INTERVAL_MS = 50;
+  private Animal selectedAnimal;
 
   public Controller(SimulationParams simulationParams) {
     this.simulationParams = simulationParams;
@@ -40,6 +45,7 @@ public class Controller {
 
   public void reset() {
     this.simulation = new Simulation(this.simulationParams);
+    this.selectedAnimal = null;
     this.updateView();
   }
 
@@ -58,6 +64,16 @@ public class Controller {
 
   public boolean isRunning() {
     return this.timer.isRunning();
+  }
+
+  public void onPositionSelected(Vector2d position) {
+    List<IMapElement> elements = this.simulation.getMap().elementsAt(position);
+    this.selectedAnimal = Utils.filterType(elements.stream(), Animal.class).findAny().orElse(null);
+    updateView();
+  }
+
+  public Animal getSelectedAnimal() {
+    return this.selectedAnimal;
   }
 
   public void addChangeListener(IChangeListener listener) {
