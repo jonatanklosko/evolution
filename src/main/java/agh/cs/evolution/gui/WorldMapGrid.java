@@ -15,12 +15,12 @@ import java.util.Map;
 
 public class WorldMapGrid extends JPanel implements IChangeListener {
   private Controller controller;
-  private Map<Vector2d, JLabel> labelByPosition;
+  private Map<Vector2d, Tile> tileByPosition;
 
   public WorldMapGrid(Controller controller) {
     this.controller = controller;
     this.controller.addChangeListener(this);
-    this.labelByPosition = new HashMap<>();
+    this.tileByPosition = new HashMap<>();
     IWorldMap map = this.controller.getSimulation().getMap();
     Vector2d lowerLeft = map.getLowerLeft();
     Vector2d upperRight = map.getUpperRight();
@@ -30,10 +30,10 @@ public class WorldMapGrid extends JPanel implements IChangeListener {
     for (int y = upperRight.y; y >= lowerLeft.y; y--) {
       for (int x = lowerLeft.x; x <= upperRight.x; x++) {
         Vector2d position = new Vector2d(x, y);
-        JLabel label = new JLabel("", SwingConstants.CENTER);
-        label.setBorder(BorderFactory.createDashedBorder(new Color(220, 220, 220)));
-        this.add(label);
-        this.labelByPosition.put(position, label);
+        Tile tile = new Tile(null);
+        tile.setBorder(BorderFactory.createDashedBorder(new Color(220, 220, 220)));
+        this.add(tile);
+        this.tileByPosition.put(position, tile);
       }
     }
     this.onChange();
@@ -41,32 +41,32 @@ public class WorldMapGrid extends JPanel implements IChangeListener {
 
   public void onChange() {
     Genome dominantGenome = this.controller.getSimulation().dominantGenome().orElse(null);
-    this.labelByPosition.forEach((position, label) -> {
-      label.setIcon(this.getIcon(position, dominantGenome));
+    this.tileByPosition.forEach((position, tile) -> {
+      tile.setImage(this.getImage(position, dominantGenome));
       if (!this.controller.isRunning()) {
-        label.setToolTipText(this.getTooltipText(position, dominantGenome));
+        tile.setToolTipText(this.getTooltipText(position, dominantGenome));
       }
     });
   }
 
-  private ImageIcon getIcon(Vector2d position, Genome dominantGenome) {
+  private Image getImage(Vector2d position, Genome dominantGenome) {
     IWorldMap map = this.controller.getSimulation().getMap();
     List<IMapElement> elements = map.elementsAt(position);
     int elementCount = elements.size();
     if (elementCount == 1) {
       IMapElement element = elements.get(0);
       if (element instanceof Plant) {
-        return ElementIcon.PLANT.imageIcon;
+        return ElementImage.PLANT.image;
       }
       if (element instanceof Animal) {
         Animal animal = (Animal) element;
         if (animal.getGenome().equals(dominantGenome)) {
-          return ElementIcon.DOMINANT_ANIMAL.imageIcon;
+          return ElementImage.DOMINANT_ANIMAL.image;
         }
-        return ElementIcon.ANIMAL.imageIcon;
+        return ElementImage.ANIMAL.image;
       }
     } else if (elementCount > 1) {
-      return ElementIcon.MULTIPLE_ANIMALS.imageIcon;
+      return ElementImage.MULTIPLE_ANIMALS.image;
     }
     return null;
   }
