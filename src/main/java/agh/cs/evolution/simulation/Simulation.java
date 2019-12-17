@@ -16,14 +16,16 @@ import java.util.stream.Stream;
 public class Simulation {
   public final SimulationParams params;
   private final MapWithJungle map;
-  private int dayNumber;
+  private long dayNumber;
   private List<SimulationDaySummary> daySummaries;
+  private List<Long> lifetimes;
 
   public Simulation(SimulationParams params) {
     this.params = params;
     this.map = new MapWithJungle(params.width, params.height, params.jungleRatio);
     this.dayNumber = 1;
     this.daySummaries = new LinkedList<>();
+    this.lifetimes = new LinkedList<>();
     this.initialize(params.initialNumberOfAnimals);
   }
 
@@ -41,7 +43,8 @@ public class Simulation {
         this.getPlantCount(),
         this.getAverageAnimalEnergy().orElse(0.0),
         this.getAverageAge().orElse(0.0),
-        this.getAverageChildrenCount().orElse(0.0)
+        this.getAverageChildrenCount().orElse(0.0),
+        this.getAverageLifetime().orElse(0.0)
     ));
      this.removeDeadAnimals();
      this.moveAnimals();
@@ -61,7 +64,10 @@ public class Simulation {
     this.animals$()
         .filter(Animal::isDead)
         .collect(Collectors.toList())  /* Materialize the stream first as we remove elements. */
-        .forEach(this.map::removeElement);
+        .forEach(animal -> {
+          this.map.removeElement(animal);
+          this.lifetimes.add(this.dayNumber - animal.getBirthDay());
+        });
   }
 
   public void moveAnimals() {
@@ -157,7 +163,6 @@ public class Simulation {
     return Utils.filterType(this.map.elements$(), Plant.class).count();
   }
 
-
   public Optional<Double> getAverageAnimalEnergy() {
     if (this.animals$().count() == 0) return Optional.empty();
     return Optional.of(
@@ -182,6 +187,14 @@ public class Simulation {
     );
   }
 
+  public Optional<Double> getAverageLifetime() {
+    if (this.lifetimes.size() == 0) return Optional.empty();
+    return Optional.of(
+        this.lifetimes.stream()
+            .collect(Collectors.averagingDouble(lifetime -> lifetime))
+    );
+  }
+
   private Stream<Animal> animals$() {
     return Utils.filterType(this.map.elements$(), Animal.class);
   }
@@ -190,7 +203,7 @@ public class Simulation {
     return this.map;
   }
 
-  public int getDayNumber() {
+  public long getDayNumber() {
     return this.dayNumber;
   }
 

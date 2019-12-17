@@ -15,13 +15,13 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
   private Direction direction;
   private List<IPositionChangeObserver> positionChangeObservers;
   private List<Animal> children;
-  private final int birthDay;
+  private final long birthDay;
 
-  public Animal(Vector2d position, int energy, int minReproductionEnergy, int birthDay) {
+  public Animal(Vector2d position, int energy, int minReproductionEnergy, long birthDay) {
     this(position, energy, minReproductionEnergy, Genome.randomGenome(), birthDay);
   }
 
-  public Animal(Vector2d position, int energy, int minReproductionEnergy, Genome genome, int birthDay) {
+  public Animal(Vector2d position, int energy, int minReproductionEnergy, Genome genome, long birthDay) {
     super(position);
     this.energy = energy;
     this.genome = genome;
@@ -44,7 +44,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     return this.minReproductionEnergy;
   }
 
-  public int getBirthDay() {
+  public long getBirthDay() {
     return this.birthDay;
   }
 
@@ -89,7 +89,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     return this.energy >= this.minReproductionEnergy;
   }
 
-  public Animal childWith(Animal other, List<Vector2d> possibleChildPositions, int birthDay) {
+  public Animal childWith(Animal other, List<Vector2d> possibleChildPositions, long birthDay) {
     Genome childGenome = this.genome.combine(other.genome);
     int childEnergy = this.energy / 4 + other.energy / 4;
     Vector2d childPosition = RandomUtils.randomElement(possibleChildPositions);
