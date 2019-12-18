@@ -15,13 +15,15 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
   private Direction direction;
   private List<IPositionChangeObserver> positionChangeObservers;
   private List<Animal> children;
+  private DateControl dateControl;
   private final long birthDay;
+  private Long deathDay;
 
-  public Animal(Vector2d position, int energy, int minReproductionEnergy, long birthDay) {
-    this(position, energy, minReproductionEnergy, Genome.randomGenome(), birthDay);
+  public Animal(Vector2d position, int energy, int minReproductionEnergy, DateControl dateControl) {
+    this(position, energy, minReproductionEnergy, Genome.randomGenome(), dateControl);
   }
 
-  public Animal(Vector2d position, int energy, int minReproductionEnergy, Genome genome, long birthDay) {
+  public Animal(Vector2d position, int energy, int minReproductionEnergy, Genome genome, DateControl dateControl) {
     super(position);
     this.energy = energy;
     this.genome = genome;
@@ -29,7 +31,9 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     this.direction = Direction.randomDirection();
     this.positionChangeObservers = new LinkedList<>();
     this.children = new LinkedList<>();
-    this.birthDay = birthDay;
+    this.dateControl = dateControl;
+    this.birthDay = dateControl.getDay();
+    this.deathDay = energy > 0 ? null : this.birthDay;
   }
 
   public int getEnergy() {
@@ -46,6 +50,13 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
 
   public long getBirthDay() {
     return this.birthDay;
+  }
+
+  public long getLifetime() {
+    if (!this.isDead()) {
+      throw new IllegalStateException("Cannot get lifetime of a living animal.");
+    }
+    return this.deathDay - this.birthDay;
   }
 
   public long getChildrenCount() {
@@ -82,23 +93,30 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
   }
 
   public void addEnergy(int energyDiff) {
-    this.energy += energyDiff;
+    this.setEnergy(energy + energyDiff);
   }
 
   public boolean ableToReproduce() {
     return this.energy >= this.minReproductionEnergy;
   }
 
-  public Animal childWith(Animal other, List<Vector2d> possibleChildPositions, long birthDay) {
+  public Animal childWith(Animal other, List<Vector2d> possibleChildPositions) {
     Genome childGenome = this.genome.combine(other.genome);
     int childEnergy = this.energy / 4 + other.energy / 4;
     Vector2d childPosition = RandomUtils.randomElement(possibleChildPositions);
-    Animal child = new Animal(childPosition, childEnergy, this.minReproductionEnergy, childGenome, birthDay);
+    Animal child = new Animal(childPosition, childEnergy, this.minReproductionEnergy, childGenome, this.dateControl);
     this.addEnergy(-this.energy / 4);
     other.addEnergy(-other.energy / 4);
     this.children.add(child);
     other.children.add(child);
     return child;
+  }
+
+  private void setEnergy(int energy) {
+    this.energy = energy;
+    if (this.isDead()) {
+      this.deathDay = this.dateControl.getDay();
+    }
   }
 
   public void addPositionChangeObserver(IPositionChangeObserver observer) {

@@ -1,10 +1,7 @@
 package agh.cs.evolution.simulation;
 
-import agh.cs.evolution.elements.Genome;
+import agh.cs.evolution.elements.*;
 import agh.cs.evolution.geometry.Vector2d;
-import agh.cs.evolution.elements.Animal;
-import agh.cs.evolution.elements.IMapElement;
-import agh.cs.evolution.elements.Plant;
 import agh.cs.evolution.map.MapWithJungle;
 import agh.cs.evolution.utils.RandomUtils;
 import agh.cs.evolution.utils.Utils;
@@ -13,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Simulation {
+public class Simulation implements DateControl {
   public final SimulationParams params;
   private final MapWithJungle map;
   private long dayNumber;
@@ -31,7 +28,7 @@ public class Simulation {
 
   private void initialize(int numberOfAnimals) {
     this.map.randomPositions$().distinct().limit(numberOfAnimals).forEach(position -> {
-      Animal animal = new Animal(position, this.params.startEnergy, this.params.startEnergy / 2, 1);
+      Animal animal = new Animal(position, this.params.startEnergy, this.params.startEnergy / 2, this);
       this.map.addElement(animal);
     });
   }
@@ -66,7 +63,7 @@ public class Simulation {
         .collect(Collectors.toList())  /* Materialize the stream first as we remove elements. */
         .forEach(animal -> {
           this.map.removeElement(animal);
-          this.lifetimes.add(this.dayNumber - animal.getBirthDay());
+          this.lifetimes.add(animal.getLifetime());
         });
   }
 
@@ -114,7 +111,7 @@ public class Simulation {
               .collect(Collectors.toList());
           List<Vector2d> possibleChildPositions = this.map.freeAdjacentPositions$(position).collect(Collectors.toList());
           if (animalPair.size() != 2 || possibleChildPositions.isEmpty()) return;
-          Animal child = animalPair.get(0).childWith(animalPair.get(1), possibleChildPositions, this.dayNumber);
+          Animal child = animalPair.get(0).childWith(animalPair.get(1), possibleChildPositions);
           this.map.addElement(child);
         });
   }
@@ -204,6 +201,10 @@ public class Simulation {
   }
 
   public long getDayNumber() {
+    return this.dayNumber;
+  }
+
+  public long getDay() {
     return this.dayNumber;
   }
 

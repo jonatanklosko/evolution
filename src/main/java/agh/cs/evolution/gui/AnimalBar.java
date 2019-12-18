@@ -27,8 +27,7 @@ public class AnimalBar extends JPanel implements IChangeListener {
     } else if (animal.isDead()) {
       this.animalLabel.setText(String.format(
           "Your animal died in the age of %d days.",
-          this.controller.getSimulation().getDayNumber() - animal.getBirthDay()
-          // TODO: add death date to animal (?)
+          animal.getLifetime()
       ));
     } else {
       this.animalLabel.setText(String.format(
