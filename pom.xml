@@ -6,7 +6,7 @@
 
     <groupId>agh.cs.evolution</groupId>
     <artifactId>evolution</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-beta.1</version>
     <name>Evolution</name>
     <packaging>jar</packaging>
 
