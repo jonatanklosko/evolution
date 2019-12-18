@@ -16,3 +16,5 @@ The file should either be located in the directory where the program is executed
 ```sh
 java -jar <path-to-jar> [path-to-parameters]
 ```
+
+See [releases](https://github.com/jonatanklosko/evolution/releases) for already compiled versions.
