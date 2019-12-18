@@ -11,7 +11,7 @@ public class App extends JFrame {
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
     this.setIconImage(
-        new ImageIcon(getClass().getClassLoader().getResource("images/favicon.png")).getImage()
+        new ImageIcon(getClass().getResource("/images/favicon.png")).getImage()
     );
 
     JTabbedPane tabbedPane = new JTabbedPane();
