@@ -2,6 +2,7 @@ package agh.cs.evolution.gui;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
 
 public enum ElementImage {
   PLANT("/images/plant.png"),
@@ -15,9 +16,8 @@ public enum ElementImage {
   ElementImage(String imagePath) {
     try {
       this.image = ImageIO.read(getClass().getResource(imagePath));
-    } catch (Exception exception) {
-      this.image = null;
-      // TODO: stuff
+    } catch (IOException exception) {
+      throw new RuntimeException("Failed to load static resource.");
     }
   }
 }
