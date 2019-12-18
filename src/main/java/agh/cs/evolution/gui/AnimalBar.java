@@ -26,7 +26,7 @@ public class AnimalBar extends JPanel implements IChangeListener {
       this.animalLabel.setText("No animal selected. Click on an animal to keep track of it.");
     } else if (animal.isDead()) {
       this.animalLabel.setText(String.format(
-          "Your animal died in the age of %d days.",
+          "Your animal died at the age of %d days.",
           animal.getLifetime()
       ));
     } else {
