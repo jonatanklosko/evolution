@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SimulationTest {
   private DateControl dateControl = new DateControl() {
     @Override
-    public long getDay() {
+    public long getDayNumber() {
       return 0;
     }
   };

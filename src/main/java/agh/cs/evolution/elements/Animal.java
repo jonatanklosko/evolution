@@ -32,7 +32,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     this.positionChangeObservers = new LinkedList<>();
     this.children = new LinkedList<>();
     this.dateControl = dateControl;
-    this.birthDay = dateControl.getDay();
+    this.birthDay = dateControl.getDayNumber();
     this.deathDay = energy > 0 ? null : this.birthDay;
   }
 
@@ -119,7 +119,7 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
   private void setEnergy(int energy) {
     this.energy = energy;
     if (this.isDead()) {
-      this.deathDay = this.dateControl.getDay();
+      this.deathDay = this.dateControl.getDayNumber();
     }
   }
 

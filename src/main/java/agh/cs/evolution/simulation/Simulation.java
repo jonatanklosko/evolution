@@ -204,10 +204,6 @@ public class Simulation implements DateControl {
     return this.dayNumber;
   }
 
-  public long getDay() {
-    return this.dayNumber;
-  }
-
   public List<SimulationDaySummary> getDaySummaries() {
     return this.daySummaries;
   }
