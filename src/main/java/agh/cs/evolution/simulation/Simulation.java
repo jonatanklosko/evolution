@@ -75,7 +75,7 @@ public class Simulation implements DateControl {
           Vector2d move = animal.getMoveVector();
           Vector2d newPosition = this.map.shiftIntoBounds(animal.getPosition().add(move));
           animal.moveTo(newPosition);
-          animal.addEnergy(-this.params.moveEnergy);
+          animal.subtractEnergy(this.params.moveEnergy);
         });
   }
 

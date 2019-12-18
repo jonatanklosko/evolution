@@ -96,6 +96,10 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     this.setEnergy(energy + energyDiff);
   }
 
+  public void subtractEnergy(int energyDiff) {
+    this.setEnergy(energy - energyDiff);
+  }
+
   public boolean ableToReproduce() {
     return this.energy >= this.minReproductionEnergy;
   }
@@ -105,8 +109,8 @@ public class Animal extends AbstractMapElement implements IPositionChangeSubject
     int childEnergy = this.energy / 4 + other.energy / 4;
     Vector2d childPosition = RandomUtils.randomElement(possibleChildPositions);
     Animal child = new Animal(childPosition, childEnergy, this.minReproductionEnergy, childGenome, this.dateControl);
-    this.addEnergy(-this.energy / 4);
-    other.addEnergy(-other.energy / 4);
+    this.subtractEnergy(this.energy / 4);
+    other.subtractEnergy(other.energy / 4);
     this.children.add(child);
     other.children.add(child);
     return child;

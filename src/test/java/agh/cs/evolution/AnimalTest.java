@@ -65,7 +65,7 @@ public class AnimalTest {
   public void ableToReproduceReturnsTrueIfAnimalHasEnoughEnergy() {
     Animal animal = new Animal(new Vector2d(0, 0), 20, 10, dateControl);
     assertTrue(animal.ableToReproduce());
-    animal.addEnergy(-10);
+    animal.subtractEnergy(10);
     assertTrue(animal.ableToReproduce());
   }
 
